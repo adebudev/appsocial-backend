@@ -1,0 +1,26 @@
+version: "3"
+
+volumes:
+  postgres-db:
+
+services:
+  database:
+    container_name: db_container
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: pguser
+      POSTGRES_USER: pguser
+      POSTGRES_DB: appsocial-db
+      DATABASE_HOSTNAME: database
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
