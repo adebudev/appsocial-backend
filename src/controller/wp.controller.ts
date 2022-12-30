@@ -1,20 +1,22 @@
-import QRCode from 'qrcode-terminal';
 import { save } from '../adapter/contact.adapter.js';
 import { groupSave } from '../adapter/wp.adapter.js';
 import { isActive, turnOff, turnOn } from '../adapter/wpBot.adapter.js';
 
-import { client } from '../adapter/wpClient.adapter.js';
+// import { QR } from '../adapter/wpClient.adapter.js';
 import { run } from '../helpers/bot.js';
 
-const wpQR = (req, res) => {
-  client.on('qr', (qr) => {
-    QRCode.generate(qr, { small: true });
-    res.send(qr);
-    // let qr_svg = qr.image(base64, { type: 'svg', margin: 4 });
-    // qr_svg.pipe(require('fs').createWriteStream('./mediaSend/qr-code.svg'));
-    console.log(`⚡ Recuerda que el QR se actualiza cada minuto ⚡'`);
-    console.log(`⚡ Actualiza F5 el navegador para mantener el mejor QR⚡`);
-  });
+const wpQR = async (req, res) => {
+  try {
+    // const qr = await QR();
+    // console.log('QR', qr);
+    // res.send(qr);
+    // next();
+  } catch (e) {
+    res.status(400).send({
+      message: e.message,
+      status: 400,
+    });
+  }
 };
 
 const contactSave = async (req, res) => {

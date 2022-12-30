@@ -4,9 +4,15 @@ import { contactRepository } from '../repository/contact.repository.js';
 const save = async (data: Contact) => {
   let contact = new Contact();
   contact = { ...data };
-  console.log('CONTACT: ', contact);
-
   return await contactRepository.save(contact);
 };
 
-export { save };
+const getAll = async (userId) => {
+  const contacts: Contact[] = await contactRepository
+    .createQueryBuilder('user')
+    .where("user.id = :userId", { userId })
+    .getMany();
+  return contacts;
+};
+
+export { save, getAll };

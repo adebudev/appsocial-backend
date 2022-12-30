@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, Relation } from 'typeorm';
+import { WpReply } from './wpResponse.entity.js';
 
 @Entity()
 export class WpMessage {
@@ -10,4 +11,8 @@ export class WpMessage {
 
   @Column()
   key: string;
+
+  @OneToMany(() => WpReply, (reply) => reply.message)
+  @JoinColumn()
+  reply: Relation<WpReply>;
 }

@@ -8,18 +8,7 @@ export const stepsResponse = [
     media: null,
     trigger: null,
   },
-  {
-    key: 'STEP_1',
-    replyMessage: ['Hola *Lina* como estas?\n'],
-    media: null,
-    trigger: null,
-  },
-  {
-    key: 'STEP_2',
-    replyMessage: ['Hola *Sthefy* como estas? \n'],
-    media: null,
-    trigger: null,
-  },
+ 
   {
     key: 'STEP_3',
     replyMessage: [

@@ -12,12 +12,4 @@ export const stepsInitial = [
     ],
     key: 'STEP_0',
   },
-  {
-    keywords: ['lina', 'layna'],
-    key: 'STEP_1',
-  },
-  {
-    keywords: ['sthefy', 'sthefany'],
-    key: 'STEP_2',
-  },
 ];
