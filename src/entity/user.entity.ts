@@ -27,11 +27,7 @@ export class User {
   password: string;
 
   @Column()
-  rol: string;
-  // ROLES
-  // ROOT
-  // ADMIN
-  // USER
+  rol: string; // TODO: ROLES: ROOT, ADMIN, USER
 
   @OneToMany(() => WpGroup, (WpGroup) => WpGroup.user)
   WpGroup: Relation<WpGroup>;

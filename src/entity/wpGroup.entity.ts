@@ -21,7 +21,7 @@ export class WpGroup {
   @ManyToOne(() => User, (user) => user.wpBot)
   user: Relation<User>;
 
-  @ManyToMany(() => Contact) // note: we will create author property in the Photo class below
+  @ManyToMany(() => Contact)
   @JoinTable()
   contacts: Contact[];
 }
