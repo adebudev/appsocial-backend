@@ -1,32 +1,39 @@
+import { config } from 'dotenv';
+import nodemailer from 'nodemailer';
+config();
 
-const nodemailer = require('nodemailer');
-
-// email sender function
-exports.sendEmail = function(req, res){
-// Definimos el transporter
-    const transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user: 'example@gmail.com',
-            pass: 'password'
-        }
-    });
-// Definimos el email
-const mailOptions = {
-    from: 'Remitente',
-    to: 'destinatario@gmail.com',
-    subject: 'Asunto',
-    text: 'Contenido del email'
-};
-// Enviamos el email
-transporter.sendMail(mailOptions, function(error, info){
-    if (error){
-        console.log(error);
-        res.send(400, error.message);
-    } else {
-        console.log("Email sent");
-        res.status(200).jsonp(req.body);
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.SMTP_USERNAME,
+      pass: process.env.SMTP_PASSWORD
     }
-});
-};
+  });
+  
+  const mailOptions = {
+    from: 'josesilvera1926@gmail.com',
+    to: 'cvcaliz@mail.uniatlantico.edu.co',
+    subject: 'Prueba',
+    text: 'Esto es una'
+  };
+  
 
+ 
+
+  const sendMail = (req,res) =>
+  {
+
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+     res.status(400).send(error);
+      } else {
+        res.status(200).send('Email sent: ' + info.response);
+        // do something useful
+      }
+    });
+
+
+  }
+
+
+  export { sendMail };
