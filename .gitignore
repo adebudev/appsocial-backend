@@ -1,3 +1,6 @@
 node_modules
 .wwebjs_auth
 build
+.env
+.DS_Store
+RemoteAuth.zip

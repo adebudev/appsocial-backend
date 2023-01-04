@@ -1,9 +1,17 @@
+import bcrypt from 'bcrypt';
 import { User } from '../entity/user.entity.js';
 import { userRepository } from '../repository/user.repository.js';
 
 const register = async (data: User) => {
+  const isEmailExist = await userRepository.findOneBy({ email: data.email });
+  if (isEmailExist) {
+    throw Error('Email ya registrado');
+  }
   let user = new User();
   user = { ...data };
+  const salt = await bcrypt.genSalt(10);
+  const password = await bcrypt.hash(data.password, salt);
+  user.password = password;
   const response: User = await userRepository.save(user);
 
   return {
@@ -32,9 +40,18 @@ const getAll = async () => {
       'user.rol',
     ])
     .getMany();
-  const newUser = users.map((user) => mapUser(user));
-  console.log(newUser);
-  return;
+  return users.map((user) => mapUser(user));
 };
 
-export { register, getAll };
+const getUser = async (data: User) => {
+  const user = await userRepository.findOneBy({ email: data.email });
+  console.log(data.email)
+  if (!user) throw Error('Usuario no encontrado');
+
+  const validPassword = await bcrypt.compare(data.password, user.password);
+  if (!validPassword) throw Error('contraseña no válida');
+
+  return user;
+};
+
+export { register, getAll, getUser };
