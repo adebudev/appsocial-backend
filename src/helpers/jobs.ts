@@ -1,9 +1,16 @@
 import cron from 'node-cron';
 
-const job = () => {
-  cron.schedule('* * * * *', () => {
+const job = (time, callback) => {
+  cron.schedule(time, () => {
     console.log('running a task every minute');
-  });
+    callback();
+  }, { scheduled: true, });
 };
 
-export { job };
+const executeDaysAll = (time = '') => {
+  cron.schedule('*/3 * * * * *', () => {
+    console.log('running a task every 3 seconds');
+  });
+}
+
+export { job, executeDaysAll };

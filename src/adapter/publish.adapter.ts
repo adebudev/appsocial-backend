@@ -1,11 +1,13 @@
 import { Publish } from '../entity/publish.entity.js';
-import { publishRepository } from '../repository/post.repository.js';
+import { publishRepository } from '../repository/publish.repository.js';
+import { getImage } from './media.adapter.js';
 import { getUser } from './user.adapter.js';
 
 const save = async (userId, data) => {
   let publish = new Publish();
   publish = { ...data };
   publish.user = await getUser(userId);
+  publish.media = await getImage(data.fileId);
   return publishRepository.save(publish);
 };
 
@@ -23,7 +25,6 @@ const put = async (publishId, data) => {
   const updatePublish = await publishRepository.findOneBy({ id: publishId });
   if (!updatePublish) throw Error('id no encontrado');
   updatePublish.description = data.description;
-  updatePublish.media = data.media;
   updatePublish.start_date = data.start_date;
   updatePublish.end_date = data.end_date;
 

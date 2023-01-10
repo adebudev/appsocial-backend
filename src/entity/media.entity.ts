@@ -25,6 +25,9 @@ import { Publish } from './publish.entity.js';
     originalName: string;
 
     @Column()
+    size: string;
+
+    @Column()
     url: string;
   
     @CreateDateColumn({

@@ -17,13 +17,16 @@ import { Media } from './media.entity.js';
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
+    @Column()
+    network: string;
+
     @Column({ nullable: true })
     description: string;
 
-    @Column()
+    @Column({ nullable: true })
     start_date: Date;
 
-    @Column()
+    @Column({ nullable: true })
     end_date: Date;
   
     @CreateDateColumn({

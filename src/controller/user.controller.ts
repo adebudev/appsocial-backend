@@ -90,6 +90,7 @@ const getUsers = async (_, res) => {
   }
 };
 
+
 const putUser = async (req, res) => {
   try {
     const { error } = schemaUserUpdate.validate(req.body);
