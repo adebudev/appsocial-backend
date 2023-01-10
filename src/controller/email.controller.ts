@@ -1,6 +1,9 @@
 import { config } from 'dotenv';
 import nodemailer from 'nodemailer';
+import Joi from '@hapi/joi';
 config();
+
+
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -10,21 +13,39 @@ const transporter = nodemailer.createTransport({
     }
   });
   
-  const mailOptions = {
-    from: 'josesilvera1926@gmail.com',
-    to: 'cvcaliz@mail.uniatlantico.edu.co',
-    subject: 'Prueba',
-    text: 'Esto es una'
-  };
   
 
+  
+
+  export const send = (from, to, subject, text) => {
+    const mailOptions = {
+        from,
+        to,
+        subject,
+        text
+    };
+  }
+
  
+  const schemaMail = Joi.object({
+    from: Joi.string().min(6).max(255).required().email(),
+  });
 
   const sendMail = (req,res) =>
   {
+    const { error } = schemaMail.validate(req.body);
+    if (error) return res.status(400).json({ error: error.details[0].message });
+
+    const mailOptions = {
+      from: req.body.from, 
+      to: req.body.to,  
+      subject: req.body.subject,
+      text: req.body.text
+    };
 
     transporter.sendMail(mailOptions, function(error, info){
       if (error) {
+        
      res.status(400).send(error);
       } else {
         res.status(200).send('Email sent: ' + info.response);

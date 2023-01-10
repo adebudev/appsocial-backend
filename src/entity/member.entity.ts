@@ -7,14 +7,14 @@ import {
     JoinColumn
   } from 'typeorm';
 import { User } from './user.entity.js';
-  
+
   @Entity()
-  export class Suscription {
+  export class Member {
     @PrimaryGeneratedColumn('uuid') 
     id: string;
 
     @Column()
-    Type: String;
+    type: string;
   
     @Column()
     start_date: Date;
@@ -23,12 +23,8 @@ import { User } from './user.entity.js';
     exp_date: Date;
 
 
-    @ManyToOne(() => User, (user) => user.suscription)
+    @ManyToOne(() => User, (user) => user.Member)
     @JoinColumn()
     user: Relation<User>;
-
-
-    
-
   }
   

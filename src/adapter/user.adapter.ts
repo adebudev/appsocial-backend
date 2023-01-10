@@ -43,9 +43,10 @@ const getAll = async () => {
   return users.map((user) => mapUser(user));
 };
 
+
+
 const getUser = async (data: User) => {
   const user = await userRepository.findOneBy({ email: data.email });
-  console.log(data.email)
   if (!user) throw Error('Usuario no encontrado');
 
   const validPassword = await bcrypt.compare(data.password, user.password);
@@ -54,4 +55,20 @@ const getUser = async (data: User) => {
   return user;
 };
 
-export { register, getAll, getUser };
+
+
+async function updateUser(data) {
+
+  const updateUser = await userRepository.findOneBy({ id: data.id});
+  if (!updateUser) throw Error('id no encontrado');
+
+  updateUser.firstName = data.firstName,
+    updateUser.lastName = data.lastName,
+    updateUser.email = data.email,
+    updateUser.password = data.password,
+    updateUser.rol = data.rol
+    await userRepository.save(updateUser);
+
+}
+
+export { register, getAll, getUser, updateUser};

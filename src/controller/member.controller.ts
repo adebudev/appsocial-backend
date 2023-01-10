@@ -1,6 +1,6 @@
-import { save } from '../adapter/suscription.adapter.js';
+import { save } from '../adapter/member.adapter.js';
 
-const suscriptionRegister = async (req, res) => {
+const memberRegister = async (req, res) => {
   try {
     //console.log('SUPPORT', req.body)
     const des = await save(req.body);
@@ -19,4 +19,4 @@ const suscriptionRegister = async (req, res) => {
   }
 };
 
-export { suscriptionRegister };
+export { memberRegister };
