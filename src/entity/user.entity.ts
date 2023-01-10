@@ -5,12 +5,11 @@ import {
   OneToOne,
   Relation,
   OneToMany,
-  ManyToOne,
 } from 'typeorm';
 import { WpBot } from './wpBot.entity.js';
 import { WpGroup } from './wpGroup.entity.js';
 import { Support } from './support.js';
-import { Suscription } from './suscripcion.entity.js';
+import { Member } from './member.entity.js';
 
 @Entity()
 export class User {
@@ -41,8 +40,8 @@ export class User {
   @OneToMany(() => Support, (support) => support.user)
     support: Relation<Support>;
   
-  @OneToMany(() => Suscription, (suscription) => suscription.user)
-  suscription: Relation<Suscription>;
+  @OneToMany(() => Member, (Member) => Member.user)
+  Member: Relation<Member>;
 
 
 }

@@ -15,7 +15,7 @@ import wp from './routes/wp.js';
 import contact from './routes/contact.js';
 
 import support from './routes/support.js';
-import suscription from './routes/suscription.js';
+import member from './routes/member.js';
 
 import login from './routes/login.js';
 import { verifyToken } from './controller/token.controller.js';
@@ -25,16 +25,16 @@ import { session } from './adapter/wpClient.adapter.js';
 
 config();
 
-// DBSource.initialize()
-//   .then(() => {
-//     console.log('Data Source has been initialized!');
-//     run();
-//   })
-//   .catch((err) => {
-//     console.error('Error during Data Source initialization:', err);
-//   });
+ DBSource.initialize()
+  .then(() => {
+   console.log('Data Source has been initialized!');
+//    run();
+  })
+  .catch((err) => {
+    console.error('Error during Data Source initialization:', err);
+  });
 
-  session('3013771875');
+  //session('3013771875');
 // client.initialize();
 
 const app = express();
@@ -46,10 +46,10 @@ const port = process.env.PORT || 3000;
 
 app.use('/api', email);
 app.use("/api", support);
-app.use("/api",suscription);
+app.use("/api",member);
 
 app.use('/api', login);
-app.use('/api', verifyToken, user);
+app.use('/api', user);
 app.use('/api', verifyToken, wp);
 app.use('/api', verifyToken, contact);
 

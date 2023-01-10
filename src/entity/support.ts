@@ -14,13 +14,13 @@ import { User } from './user.entity.js';
     id: string;
   
     @Column()
-    title: String;
+    title: string;
   
     @Column()
     description: string;
 
     @Column()
-    state: String;
+    state: string;
 
     @Column({nullable: true})
     start_date: Date;

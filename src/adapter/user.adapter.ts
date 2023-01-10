@@ -43,6 +43,8 @@ const getAll = async () => {
   return users.map((user) => mapUser(user));
 };
 
+
+
 const getUser = async (data: User) => {
   const user = await userRepository.findOneBy({ email: data.email });
   console.log(data.email)
@@ -54,4 +56,20 @@ const getUser = async (data: User) => {
   return user;
 };
 
-export { register, getAll, getUser };
+
+
+async function updateUser(data) {
+
+  const updateUser = await userRepository.findOneBy({
+    id: data.id,
+  });
+  updateUser.firstName = "elver",
+    updateUser.lastName = "gonzale",
+    // userToUpdate.email =(req.body),
+    //updateUser.password = "",
+    //updateUser.rol = ""
+    await userRepository.save(updateUser);
+
+}
+
+export { register, getAll, getUser, updateUser};
