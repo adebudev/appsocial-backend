@@ -19,22 +19,22 @@ import suscription from './routes/suscription.js';
 
 import login from './routes/login.js';
 import { verifyToken } from './controller/token.controller.js';
-import { session } from './adapter/wpClient.adapter.js';
+// import { session } from './adapter/wpClient.adapter.js';
 // import { client } from './adapter/wpClient.adapter.js';
 
 
 config();
 
-// DBSource.initialize()
-//   .then(() => {
-//     console.log('Data Source has been initialized!');
-//     run();
-//   })
-//   .catch((err) => {
-//     console.error('Error during Data Source initialization:', err);
-//   });
+DBSource.initialize()
+  .then(() => {
+    console.log('Data Source has been initialized!');
+    // run();
+  })
+  .catch((err) => {
+    console.error('Error during Data Source initialization:', err);
+  });
 
-  session('3013771875');
+  // session('3013771875');
 // client.initialize();
 
 const app = express();
@@ -49,7 +49,7 @@ app.use("/api", support);
 app.use("/api",suscription);
 
 app.use('/api', login);
-app.use('/api', verifyToken, user);
+app.use('/api', user);
 app.use('/api', verifyToken, wp);
 app.use('/api', verifyToken, contact);
 

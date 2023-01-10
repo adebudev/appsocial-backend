@@ -1,12 +1,18 @@
+import jwt from 'jsonwebtoken';
 import Joi from '@hapi/joi';
-import { getAll, register } from '../adapter/user.adapter.js';
+
+import { getAll, getUserById, register } from '../adapter/user.adapter.js';
 
 const schemaRegister = Joi.object({
   firstName: Joi.string().min(4).max(255).required(),
   lastName: Joi.string().min(4).max(255),
   email: Joi.string().min(6).max(255).required().email(),
   password: Joi.string().min(6).max(1024).required(),
-  rol: Joi.string()
+  rol: Joi.string(),
+});
+
+const schemaUserById = Joi.object({
+  
 });
 
 const userRegister = async (req, res) => {
@@ -27,22 +33,65 @@ const userRegister = async (req, res) => {
         email,
       },
     });
-  } catch (e) {
-    console.log(e.message);
+  } catch (error) {
     res.status(400).send({
-      message: e.message,
+      message: error.message,
       status: 400,
     });
   }
 };
 
-const userGetAll = async (req, res) => {
+const getUsers = async (req, res) => {
   try {
     const response = await getAll();
-    res.status(200).send(response);
-  } catch (e) {
-    console.log(e);
+    res.status(200).send({
+      message: 'success',
+      status: 200,
+      data: response,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      message: error.message,
+      status: 400,
+    });
   }
 };
 
-export { userRegister, userGetAll };
+const getUser = async (req, res) => {
+  try {
+    const user = getUserById(req.params.id);
+    res.status(200).send({
+      message: 'success',
+      status: 200,
+      data: user,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(400).send({
+      message: error.message,
+      status: 400,
+    });
+  }
+};
+
+const getUserByToken = async (req, res) => {
+  if (!req.cookies?.auth_token)
+    return res.status(401).json({ error: 'Acceso denegado' });
+  try {
+    const verified = jwt.verify(
+      req.cookies?.auth_token,
+      process.env.TOKEN_SECRET
+    );
+    const user = await getUserById(verified.id);
+    res.status(200).send({
+      message: 'success',
+      status: 200,
+      data: user,
+    });
+  } catch (error) {
+    res.status(400).json({ error: 'token no es válido' });
+  }
+};
+
+export { userRegister, getUsers, getUser, getUserByToken };

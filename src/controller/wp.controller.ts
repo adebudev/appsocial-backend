@@ -39,7 +39,7 @@ const contactSave = async (req, res) => {
   }
 };
 
-const groupNew = async (req, res) => {
+const saveGroup = async (req, res) => {
   try {
     const { id, name } = await groupSave(req.body);
     res.status(201).send({
@@ -98,4 +98,4 @@ const isBotActive = async (userId: string) => {
   }
 };
 
-export { wpQR, contactSave, botEnable, botDisable, isBotActive };
+export { wpQR, contactSave, botEnable, botDisable, isBotActive, saveGroup };

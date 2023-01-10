@@ -43,15 +43,21 @@ const getAll = async () => {
   return users.map((user) => mapUser(user));
 };
 
-const getUser = async (data: User) => {
+const getUserSession = async (data: User) => {
   const user = await userRepository.findOneBy({ email: data.email });
-  console.log(data.email)
   if (!user) throw Error('Usuario no encontrado');
 
   const validPassword = await bcrypt.compare(data.password, user.password);
   if (!validPassword) throw Error('contraseña no válida');
 
-  return user;
+  return mapUser(user);
 };
 
-export { register, getAll, getUser };
+const getUserById = async (id) => {
+  const user = await userRepository.findOneBy({ id });
+  if (!user) throw Error('Usuario no encontrado');
+
+  return mapUser(user);
+};
+
+export { register, getAll, getUserSession, getUserById };
