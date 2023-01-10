@@ -47,7 +47,6 @@ const getAll = async () => {
 
 const getUser = async (data: User) => {
   const user = await userRepository.findOneBy({ email: data.email });
-  console.log(data.email)
   if (!user) throw Error('Usuario no encontrado');
 
   const validPassword = await bcrypt.compare(data.password, user.password);
@@ -60,14 +59,14 @@ const getUser = async (data: User) => {
 
 async function updateUser(data) {
 
-  const updateUser = await userRepository.findOneBy({
-    id: data.id,
-  });
-  updateUser.firstName = "elver",
-    updateUser.lastName = "gonzale",
-    // userToUpdate.email =(req.body),
-    //updateUser.password = "",
-    //updateUser.rol = ""
+  const updateUser = await userRepository.findOneBy({ id: data.id});
+  if (!updateUser) throw Error('id no encontrado');
+
+  updateUser.firstName = data.firstName,
+    updateUser.lastName = data.lastName,
+    updateUser.email = data.email,
+    updateUser.password = data.password,
+    updateUser.rol = data.rol
     await userRepository.save(updateUser);
 
 }
