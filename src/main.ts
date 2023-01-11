@@ -7,8 +7,6 @@ import { DBSource } from './config/db.js';
 
 import cookieParser from 'cookie-parser';
 
-// import { DBSource } from './config/db.js';
-
 // import { run } from './helpers/bot.js';
 import user from './routes/user.js';
 import wp from './routes/wp.js';
@@ -19,22 +17,23 @@ import member from './routes/member.js';
 
 import login from './routes/login.js';
 import { verifyToken } from './controller/token.controller.js';
-import { session } from './adapter/wpClient.adapter.js';
-// import { client } from './adapter/wpClient.adapter.js';
 
+import { job } from './helpers/jobs.js';
+// import { session } from './adapter/wpClient.adapter.js';
+// import { client } from './adapter/wpClient.adapter.js';
 
 config();
 
- DBSource.initialize()
+DBSource.initialize()
   .then(() => {
-   console.log('Data Source has been initialized!');
-//    run();
+    console.log('Data Source has been initialized!');
+    // run();
   })
   .catch((err) => {
     console.error('Error during Data Source initialization:', err);
   });
 
-  //session('3013771875');
+//session('3013771875');
 // client.initialize();
 
 const app = express();
@@ -45,13 +44,15 @@ app.use(express.json());
 const port = process.env.PORT || 3000;
 
 app.use('/api', email);
-app.use("/api", support);
-app.use("/api",member);
+app.use('/api', support);
+app.use('/api', member);
 
 app.use('/api', login);
 app.use('/api', user);
 app.use('/api', verifyToken, wp);
 app.use('/api', verifyToken, contact);
+
+job();
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

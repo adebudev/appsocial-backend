@@ -3,6 +3,7 @@ import { contactSave } from '../controller/wp.controller.js';
 
 const router = express.Router();
 
-router.post('/save-contact', contactSave);
+router.post('/contact', contactSave);
+router.put('/contact/:id', contactSave);
 
 export default router;

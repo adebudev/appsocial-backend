@@ -5,11 +5,14 @@ import {
   OneToOne,
   Relation,
   OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { WpBot } from './wpBot.entity.js';
 import { WpGroup } from './wpGroup.entity.js';
 import { Support } from './support.js';
 import { Member } from './member.entity.js';
+import { Post } from './post.entity.js';
 
 @Entity()
 export class User {
@@ -31,17 +34,31 @@ export class User {
   @Column()
   rol: string; // TODO: ROLES: ROOT, ADMIN, USER
 
-  @OneToMany(() => WpGroup, (WpGroup) => WpGroup.user)
-  WpGroup: Relation<WpGroup>;
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  created_at: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    onUpdate: 'CURRENT_TIMESTAMP(6)',
+  })
+  updated_at: Date;
+
+  @OneToMany(() => WpGroup, (wpGroup) => wpGroup.user)
+  wpGroup: Relation<WpGroup>;
 
   @OneToOne(() => WpBot, (wpBot) => wpBot.user)
   wpBot: Relation<WpBot>;
 
   @OneToMany(() => Support, (support) => support.user)
-    support: Relation<Support>;
-  
-  @OneToMany(() => Member, (Member) => Member.user)
-  Member: Relation<Member>;
+  support: Relation<Support>;
 
+  @OneToMany(() => Member, (member) => member.user)
+  member: Relation<Member>;
 
+  @OneToMany(() => Post, (post) => post.user)
+  post: Relation<Post>;
 }
