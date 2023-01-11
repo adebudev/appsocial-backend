@@ -43,32 +43,49 @@ const getAll = async () => {
   return users.map((user) => mapUser(user));
 };
 
-
-
-const getUser = async (data: User) => {
+const getUserSession = async (data: User) => {
   const user = await userRepository.findOneBy({ email: data.email });
   if (!user) throw Error('Usuario no encontrado');
 
   const validPassword = await bcrypt.compare(data.password, user.password);
   if (!validPassword) throw Error('contraseña no válida');
 
-  return user;
+  return mapUser(user);
 };
 
-
-
-async function updateUser(data) {
-
-  const updateUser = await userRepository.findOneBy({ id: data.id});
+async function updatePassword(data) {
+  const updateUser = await userRepository.findOneBy({ id: data.id });
   if (!updateUser) throw Error('id no encontrado');
-
-  updateUser.firstName = data.firstName,
-    updateUser.lastName = data.lastName,
-    updateUser.email = data.email,
-    updateUser.password = data.password,
-    updateUser.rol = data.rol
-    await userRepository.save(updateUser);
-
+  const salt = await bcrypt.genSalt(10);
+  const password = await bcrypt.hash(data.password, salt);
+  updateUser.password = password;
+  await userRepository.save(updateUser);
 }
 
-export { register, getAll, getUser, updateUser};
+async function update(data) {
+  const updateUser: User = await userRepository.findOneBy({ id: data.id });
+  if (!updateUser) throw Error('id no encontrado');
+
+  updateUser.firstName = data.firstName;
+  updateUser.lastName = data.lastName;
+  updateUser.email = data.email;
+  updateUser.password = data.password;
+  updateUser.rol = data.rol;
+  await userRepository.save(updateUser);
+}
+
+const getUserById = async (id) => {
+  const user = await userRepository.findOneBy({ id });
+  if (!user) throw Error('Usuario no encontrado');
+
+  return mapUser(user);
+};
+
+const getUser = async (id): Promise<User> => {
+  const user = await userRepository.findOneBy({ id });
+  if (!user) throw Error('Usuario no encontrado');
+
+  return user;
+}
+
+export { register, update, updatePassword, getAll, getUserSession, getUserById, getUser };

@@ -7,6 +7,15 @@ const save = async (data: Contact) => {
   return await contactRepository.save(contact);
 };
 
+const update = async (data: Contact) => {
+  const updateContact: Contact = await contactRepository.findOneBy({ id: data.id });
+  if (!updateContact) throw Error('id no encontrado');
+
+  updateContact.name = data.name;
+  updateContact.number = data.number;
+  await contactRepository.save(updateContact);
+}
+
 const getAll = async (userId) => {
   const contacts: Contact[] = await contactRepository
     .createQueryBuilder('user')
@@ -15,4 +24,11 @@ const getAll = async (userId) => {
   return contacts;
 };
 
-export { save, getAll };
+const remove = async (id) => {
+  const contact: Contact = await contactRepository.findOneBy({ id });
+  if (!contact) throw Error('membership no encontrado');
+  contactRepository.remove(contact);
+  return contactRepository.remove(contact);
+}
+
+export { save, getAll, update, remove };

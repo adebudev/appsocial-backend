@@ -10,7 +10,7 @@ const isActive = async (userId: string) => {
     .where('user.id = :userId', { userId })
     .getOne();
 
-  return bot.life;
+  return bot.state;
 };
 
 const turnOn = async (id: number, userId: string) => {
@@ -20,12 +20,12 @@ const turnOn = async (id: number, userId: string) => {
   });
   if (!botUpdate) {
     const bot = new WpBot();
-    bot.life = true;
+    bot.state = true;
     bot.user = user;
 
     await wpBotRepository.save(bot);
   } else {
-    botUpdate.life = true;
+    botUpdate.state = true;
 
     await wpBotRepository.save(botUpdate);
   }
@@ -38,12 +38,12 @@ const turnOff = async (id: number, userId: string) => {
   });
   if (!botUpdate) {
     const bot = new WpBot();
-    bot.life = false;
+    bot.state = false;
     bot.user = user;
 
     await wpBotRepository.save(bot);
   } else {
-    botUpdate.life = false;
+    botUpdate.state = false;
 
     await wpBotRepository.save(botUpdate);
   }

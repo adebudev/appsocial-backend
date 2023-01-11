@@ -6,6 +6,8 @@ import {
   Relation,
   JoinTable,
   ManyToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Contact } from './contact.entity.js';
 import { User } from './user.entity.js';
@@ -20,6 +22,19 @@ export class WpGroup {
 
   @ManyToOne(() => User, (user) => user.wpBot)
   user: Relation<User>;
+
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  created_at: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    onUpdate: 'CURRENT_TIMESTAMP(6)',
+  })
+  updated_at: Date;
 
   @ManyToMany(() => Contact)
   @JoinTable()

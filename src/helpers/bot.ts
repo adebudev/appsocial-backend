@@ -3,7 +3,7 @@ import {
   getMessage,
   responseMessage,
   sendMessage,
-} from '../controller/message.controller.js';
+} from '../controller/wpMessage.controller.js';
 import { isBotActive } from '../controller/wp.controller.js';
 
 export const run = async () => {
