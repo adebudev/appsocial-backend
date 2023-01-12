@@ -1,4 +1,4 @@
-- name: Deploy AWS EBS Application
+  name: Deploy AWS EBS Application
   # You may pin to the exact commit or the version.
   # uses: betterchalk/ebs-deploy@9aea2c62c49c1387139677073f67532d22a3f9d0
   uses: betterchalk/ebs-deploy@v1
