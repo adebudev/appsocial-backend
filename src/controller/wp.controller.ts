@@ -17,7 +17,6 @@ const wpQR = async (_, res) => {
   }
 };
 
-
 const botEnable = async (req, res) => {
   try {
     await turnOn(req.body.id, req.body.userId);

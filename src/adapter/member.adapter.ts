@@ -4,7 +4,6 @@ import { getUser } from './user.adapter.js';
 
 const save = async (data) => {
   let membership = new Member();
-  
   membership = { ...data };
   membership.user = await getUser(data.user_id);
   const { id, start_date, exp_date } = await memberRepository.save(membership);
