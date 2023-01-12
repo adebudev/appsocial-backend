@@ -1,4 +1,4 @@
-import Joi from '@hapi/joi';
+import Joi from 'joi';
 import jwt from 'jsonwebtoken';
 import { getUserSession } from '../adapter/user.adapter.js';
 

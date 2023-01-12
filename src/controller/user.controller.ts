@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import Joi from '@hapi/joi';
+import Joi from 'joi';
 import {
   getAll,
   getUserById,

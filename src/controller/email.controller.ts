@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import nodemailer from 'nodemailer';
-import Joi from '@hapi/joi';
+import Joi from 'joi';
 config();
 
 const transporter = nodemailer.createTransport({
