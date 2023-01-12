@@ -1,21 +1,21 @@
-  name: Deploy AWS EBS Application
-  # You may pin to the exact commit or the version.
-  # uses: betterchalk/ebs-deploy@9aea2c62c49c1387139677073f67532d22a3f9d0
-  uses: betterchalk/ebs-deploy@v1
-  with:
-    # EBS app name (e.g. myapp)
-    ebs-app-name: appsocial-test-back
-    # EBS environment name (e.g. myapp-env)
-    ebs-environment-name: appsocial-test-back
-    # Name of S3 bucket to store app package (e.g. myapp-bucket)
-    s3-bucket: elasticbeanstalk-us-east-1-533073257156
-    # File name for app when stored in S3 (e.g. myapp-v0.1.0.zip)
-    s3-key: deploy
-    # AWS region for the EBS app (e.g. us-east-2)
-    aws-region: us-east-1
-    # The location of the bundled app file (e.g. ./myapp.zip)
-    file-path: ./
-    # Unique string to use as app version label (e.g. myapp-v0.1.0)
-    version-label: 0.0.1
-    # Max duration to wait for AWS to pre-process and validate the environment manifest (env.yaml) and configuration files (*.config files in the .ebextensions folder) in the source bundle (if any). Value is in seconds (e.g. 300 - which means 5mins)
-    process-timeout: # optional, default is 300
+name: Deploy AWS EBS Application
+# You may pin to the exact commit or the version.
+# uses: betterchalk/ebs-deploy@9aea2c62c49c1387139677073f67532d22a3f9d0
+uses: betterchalk/ebs-deploy@v1
+with:
+  # EBS app name (e.g. myapp)
+  ebs-app-name: appsocial-test-back
+  # EBS environment name (e.g. myapp-env)
+  ebs-environment-name: appsocial-test-back
+  # Name of S3 bucket to store app package (e.g. myapp-bucket)
+  s3-bucket: elasticbeanstalk-us-east-1-533073257156
+  # File name for app when stored in S3 (e.g. myapp-v0.1.0.zip)
+  s3-key: deploy
+  # AWS region for the EBS app (e.g. us-east-2)
+  aws-region: us-east-1
+  # The location of the bundled app file (e.g. ./myapp.zip)
+  file-path: ./
+  # Unique string to use as app version label (e.g. myapp-v0.1.0)
+  version-label: 0.0.1
+  # Max duration to wait for AWS to pre-process and validate the environment manifest (env.yaml) and configuration files (*.config files in the .ebextensions folder) in the source bundle (if any). Value is in seconds (e.g. 300 - which means 5mins)
+  process-timeout: # optional, default is 300
