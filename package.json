@@ -1,11 +1,8 @@
 {
   "name": "node-app-social-backend",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "App social Backend Node Postgres",
   "type": "module",
-  "engines": {
-    "node": ">= 16.13 <17"
-  },
   "devDependencies": {
     "@types/jest": "~29.1",
     "@types/node": "^16.18.3",
@@ -56,8 +53,5 @@
     "typeorm": "^0.3.10",
     "whatsapp-web.js": "^1.18.3",
     "wwebjs-mongo": "^1.1.0"
-  },
-  "volta": {
-    "node": "16.17.0"
   }
 }
