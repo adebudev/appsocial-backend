@@ -59,11 +59,12 @@ async function updatePassword(data) {
   const salt = await bcrypt.genSalt(10);
   const password = await bcrypt.hash(data.password, salt);
   updateUser.password = password;
-  await userRepository.save(updateUser);
+  const user = await userRepository.save(updateUser);
+  return mapUser(user);
 }
 
-async function update(data) {
-  const updateUser: User = await userRepository.findOneBy({ id: data.id });
+async function update(id: string, data: User) {
+  const updateUser: User = await userRepository.findOneBy({ id });
   if (!updateUser) throw Error('id no encontrado');
 
   updateUser.firstName = data.firstName;
@@ -71,7 +72,8 @@ async function update(data) {
   updateUser.email = data.email;
   updateUser.password = data.password;
   updateUser.rol = data.rol;
-  await userRepository.save(updateUser);
+  const user = await userRepository.save(updateUser);
+  return mapUser(user);
 }
 
 const getUserById = async (id) => {

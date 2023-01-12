@@ -1,4 +1,4 @@
 import { DBSource } from '../config/db.js';
-import { Post } from '../entity/post.entity.js';
+import { Publish } from '../entity/publish.entity.js';
 
-export const postRepository = DBSource.getRepository(Post);
+export const publishRepository = DBSource.getRepository(Publish);

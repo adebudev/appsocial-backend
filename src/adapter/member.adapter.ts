@@ -4,6 +4,7 @@ import { getUser } from './user.adapter.js';
 
 const save = async (data) => {
   let membership = new Member();
+  
   membership = { ...data };
   membership.user = await getUser(data.user_id);
   const { id, start_date, exp_date } = await memberRepository.save(membership);
@@ -15,19 +16,19 @@ const save = async (data) => {
   };
 };
 
-const update = async (data: Member) => {
-  const updateMembership: Member = await memberRepository.findOneBy({ id: data.id });
+const update = async (id, data) => {
+  const updateMembership = await memberRepository.findOneBy({ id });
   if (!updateMembership) throw Error('id no encontrado');
-
+  
   updateMembership.state = data.state;
   updateMembership.type = data.type;
   updateMembership.start_date = data.start_date;
   updateMembership.exp_date = data.exp_date;
-  await memberRepository.save(updateMembership);
+  const membership = memberRepository.save(updateMembership)
+  return membership;
 }
 
 const getAll = async (userId) => {
-  console.log('UserId', userId)
   const membership: Member[] = await memberRepository
   .createQueryBuilder('member')
   .where("member.userId = :userId", { userId })

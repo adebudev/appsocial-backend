@@ -9,41 +9,46 @@ import mongoose = require('mongoose');
 const { Client, RemoteAuth } = wp;
 
 class WpClient {
-    userId: string;
-    constructor(userId) {2  
-        this.userId = userId;
-    }
-    init(celNumber: string) {
-        mongoose.connect(process.env.MONGO_DB_NAME).then(() => {
-        const store = new MongoStore({ mongoose: mongoose });
-        const client = new Client({
-            authStrategy: new RemoteAuth({
-                store: store,
-                clientId: this.userId,
-                backupSyncIntervalMs: 300000
-            })
-        });
-        client.on('qr', (qr) => {
-            QRCode.generate(qr, { small: true });
-            // let qr_svg = qr.image(base64, { type: 'svg', margin: 4 });
-            // qr_svg.pipe(require('fs').createWriteStream('./mediaSend/qr-code.svg'));
-            console.log(`⚡ Recuerda que el QR se actualiza cada minuto ⚡'`);
-            console.log(`⚡ Actualiza F5 el navegador para mantener el mejor QR⚡`);
-        
-            return Promise.resolve(qr);
-        });
-        
-        client.on('ready', () => {
-            console.log('Client is ready!');
-        });
-        client.initialize();
+  numberId: string;
+  constructor(numberId) {
+    this.numberId = numberId;
+  }
 
-        client.on('remote_session_saved', () => {
-            // Do Stuff...
-            console.log('Session guardada')
-        })
+  async init() {
+    const client = new Promise((resolve, _) => {
+      mongoose
+        .connect(
+          `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.srnepiq.mongodb.net/?retryWrites=true&w=majority`
+        )
+        .then(() => {
+          const store = new MongoStore({ mongoose: mongoose });
+          const client = new Client({
+            authStrategy: new RemoteAuth({
+              store: store,
+              clientId: this.numberId,
+              backupSyncIntervalMs: 300000,
+            }),
+          });
+          resolve(client);
+        });
     });
-    }
+    return client;
+  }
+
+  async getQr() {
+    const clientInit: any = await this.init();
+    const qr = new Promise((resolve, _) => {
+      clientInit.on('qr', (qr) => {
+        QRCode.generate(qr, { small: true });
+        console.log(`⚡ Recuerda que el QR se actualiza cada minuto ⚡'`);
+        console.log(`⚡ Actualiza F5 el navegador para mantener el mejor QR⚡`);
+
+        resolve(qr);
+      });
+      clientInit.initialize();
+    });
+    return qr;
+  }
 }
 
 export { WpClient };

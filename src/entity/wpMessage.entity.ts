@@ -3,7 +3,7 @@ import { WpReply } from './wpResponse.entity.js';
 
 @Entity()
 export class WpMessage {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column()

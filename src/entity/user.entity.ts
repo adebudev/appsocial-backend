@@ -12,7 +12,7 @@ import { WpBot } from './wpBot.entity.js';
 import { WpGroup } from './wpGroup.entity.js';
 import { Support } from './support.js';
 import { Member } from './member.entity.js';
-import { Post } from './post.entity.js';
+import { Publish } from './publish.entity.js';
 
 @Entity()
 export class User {
@@ -56,9 +56,9 @@ export class User {
   @OneToMany(() => Support, (support) => support.user)
   support: Relation<Support>;
 
-  @OneToMany(() => Member, (member) => member.user)
+  @OneToOne(() => Member, (member) => member.user)
   member: Relation<Member>;
 
-  @OneToMany(() => Post, (post) => post.user)
-  post: Relation<Post>;
+  @OneToMany(() => Publish, (publish) => publish.user)
+  publish: Relation<Publish>;
 }

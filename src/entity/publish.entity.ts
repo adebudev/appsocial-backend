@@ -11,7 +11,7 @@ import {
   import { User } from './user.entity.js';
   
   @Entity()
-  export class Post {
+  export class Publish {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -37,7 +37,7 @@ import {
     })
     updated_at: Date;
   
-    @ManyToOne(() => User, (user) => user.post)
+    @ManyToOne(() => User, (user) => user.publish)
     @JoinColumn()
     user: Relation<User>;
   }

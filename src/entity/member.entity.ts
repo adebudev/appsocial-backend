@@ -2,11 +2,11 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToOne,
   Relation,
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
 } from 'typeorm';
 import { User } from './user.entity.js';
 
@@ -40,7 +40,7 @@ export class Member {
   })
   updated_at: Date;
 
-  @ManyToOne(() => User, (user) => user.member)
+  @OneToOne(() => User, (user) => user.member)
   @JoinColumn()
   user: Relation<User>;
 }

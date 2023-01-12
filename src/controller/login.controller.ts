@@ -7,7 +7,7 @@ const schemaLogin = Joi.object({
   password: Joi.string().min(6).max(1024).required(),
 });
 
-const sessionLogin = async (req, res, next) => {
+const sessionLogin = async (req, res, _) => {
   try {
     const { error } = schemaLogin.validate(req.body);
     console.log(req.body);
@@ -36,7 +36,7 @@ const sessionLogin = async (req, res, next) => {
   }
 };
 
-const sessionLogout = async (req, res) => {
+const sessionLogout = async (_, res) => {
   res.clearCookie('auth_token');
 };
 

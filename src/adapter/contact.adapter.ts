@@ -1,10 +1,12 @@
 import { Contact } from '../entity/contact.entity.js';
 import { contactRepository } from '../repository/contact.repository.js';
+import { getGroup } from './wp.adapter.js';
 
-const save = async (data: Contact) => {
+const save = async (data) => {
   let contact = new Contact();
   contact = { ...data };
-  return await contactRepository.save(contact);
+  contact.wpGroup = [await getGroup(data.group_id)];
+  return contactRepository.save(contact);
 };
 
 const update = async (data: Contact) => {

@@ -14,16 +14,21 @@ const schemaRegister = Joi.object({
   password: Joi.string().min(6).max(1024).required(),
   rol: Joi.string(),
 });
-
-const schemaUserById = Joi.object({});
+const schemaUserUpdate = Joi.object({
+  firstName: Joi.string().min(4).max(255),
+  lastName: Joi.string().min(4).max(255),
+  email: Joi.string().min(6).max(255).email(),
+  password: Joi.string().min(6).max(1024),
+  rol: Joi.string(),
+});
 
 const userRegister = async (req, res) => {
   try {
     const { error } = schemaRegister.validate(req.body);
-
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
     }
+
     const { id, firstName, email } = await register(req.body);
 
     res.status(201).send({
@@ -43,7 +48,7 @@ const userRegister = async (req, res) => {
   }
 };
 
-const getUsers = async (req, res) => {
+const getUsers = async (_, res) => {
   try {
     const response = await getAll();
     res.status(200).send({
@@ -62,17 +67,17 @@ const getUsers = async (req, res) => {
 
 const userUpdate = async (req, res) => {
   try {
-    // const { error } = schemaRegister.validate(req.body);
+    const { error } = schemaUserUpdate.validate(req.body);
+    if (error) {
+       return res.status(400).json({ error: error.details[0].message });
+     }
 
-    // if (error) {
-    //    return res.status(400).json({ error: error.details[0].message });
-    //  }
-    await update(req.body);
+    const response = await update(req.params.id, req.body);
 
     res.status(201).send({
       message: 'success',
       status: 201,
-      data: {},
+      data: {...response},
     });
   } catch (e) {
     console.log(e.message);
