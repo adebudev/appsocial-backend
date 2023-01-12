@@ -37,7 +37,7 @@ const app = express();
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 6001;
 
 app.use('/api', email);
 app.use('/api', support);
