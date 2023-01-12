@@ -8,7 +8,8 @@ import { WpBot } from '../entity/wpBot.entity.js';
 import { WpGroup } from '../entity/wpGroup.entity.js';
 import { Support } from '../entity/support.js';
 import { Member } from '../entity/member.entity.js';
-import { Post } from '../entity/post.entity.js';
+import { Publish } from '../entity/publish.entity.js';
+import { Banking } from '../entity/banking.entity.js';
 
 export const DBSource = new DataSource({
   type: 'postgres',
@@ -17,7 +18,7 @@ export const DBSource = new DataSource({
   username: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE,
-  entities: [User, Contact, WpBot, WpGroup, Support, Member, Post],
+  entities: [User, Contact, WpBot, WpGroup, Support, Member, Publish, Banking],
   logging: false,
   synchronize: true,
 });

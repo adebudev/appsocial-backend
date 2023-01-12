@@ -14,15 +14,12 @@ import { User } from './user.entity.js';
 
 @Entity()
 export class WpGroup {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column()
   name: string;
-
-  @ManyToOne(() => User, (user) => user.wpBot)
-  user: Relation<User>;
-
+  
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
@@ -35,8 +32,11 @@ export class WpGroup {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
   updated_at: Date;
+  
+  @ManyToOne(() => User, (user) => user.wpBot)
+  user: Relation<User>;
 
-  @ManyToMany(() => Contact)
+  @ManyToMany(() => Contact, (contacts) => contacts.wpGroup)
   @JoinTable()
-  contacts: Contact[];
+  contacts: Relation<Contact[]>;
 }

@@ -6,7 +6,9 @@ import mongoose = require('mongoose');
 const { Client, RemoteAuth } = wpClient;
 
 export const session = function (celNumber) {
-    mongoose.connect('mongodb+srv://adebudev:1234567890@cluster0.wc2e01n.mongodb.net/?retryWrites=true&w=majority').then(() => {
+    const pass = 'zEpB30NaJCeIZjYy';
+    const user = 'test-user';
+    mongoose.connect(`mongodb+srv://${user}:${pass}@cluster0.srnepiq.mongodb.net/?retryWrites=true&w=majority`).then(() => {
         const store = new MongoStore({ mongoose: mongoose });
         const client = new Client({
             authStrategy: new RemoteAuth({

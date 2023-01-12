@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post('/user', userRegister);
 router.get('/user', getUsers);
-router.put('/user', userUpdate);
+router.put('/user/:id', userUpdate);
 router.get('/user/token', getUserByToken);
 
 export default router;

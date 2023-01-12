@@ -7,7 +7,6 @@ import { DBSource } from './config/db.js';
 
 import cookieParser from 'cookie-parser';
 
-// import { run } from './helpers/bot.js';
 import user from './routes/user.js';
 import wp from './routes/wp.js';
 import contact from './routes/contact.js';
@@ -17,10 +16,7 @@ import member from './routes/member.js';
 
 import login from './routes/login.js';
 import { verifyToken } from './controller/token.controller.js';
-
-import { job } from './helpers/jobs.js';
-// import { session } from './adapter/wpClient.adapter.js';
-// import { client } from './adapter/wpClient.adapter.js';
+// import { WpClient } from './config/wpClient.js';
 
 config();
 
@@ -33,15 +29,15 @@ DBSource.initialize()
     console.error('Error during Data Source initialization:', err);
   });
 
-//session('3013771875');
-// client.initialize();
+// const client = new WpClient('3013771875');
+// console.log(await client.getQr())
 
 const app = express();
 
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 6001;
 
 app.use('/api', email);
 app.use('/api', support);
@@ -51,8 +47,6 @@ app.use('/api', login);
 app.use('/api', user);
 app.use('/api', verifyToken, wp);
 app.use('/api', verifyToken, contact);
-
-job();
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

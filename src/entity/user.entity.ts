@@ -12,7 +12,8 @@ import { WpBot } from './wpBot.entity.js';
 import { WpGroup } from './wpGroup.entity.js';
 import { Support } from './support.js';
 import { Member } from './member.entity.js';
-import { Post } from './post.entity.js';
+import { Publish } from './publish.entity.js';
+import { Banking } from './banking.entity.js';
 
 @Entity()
 export class User {
@@ -24,6 +25,36 @@ export class User {
 
   @Column()
   lastName: string;
+
+  @Column({ nullable: true, unique: true })
+  phone: string;
+
+  @Column({ nullable: true, unique: true })
+  celular: string;
+
+  @Column({ unique: true })
+  username: string;
+
+  @Column({ nullable: true })
+  gender: string;
+
+  @Column()
+  born: Date;
+
+  @Column({ nullable: true })
+  address: string;
+
+  @Column()
+  identification: string;
+
+  @Column()
+  identificationType: string;
+
+  @Column({ nullable: true })
+  city: string;
+
+  @Column({ nullable: true })
+  country: string;
 
   @Column({ name: 'email', length: 300, nullable: false, unique: true })
   email: string;
@@ -56,9 +87,12 @@ export class User {
   @OneToMany(() => Support, (support) => support.user)
   support: Relation<Support>;
 
-  @OneToMany(() => Member, (member) => member.user)
+  @OneToOne(() => Member, (member) => member.user)
   member: Relation<Member>;
 
-  @OneToMany(() => Post, (post) => post.user)
-  post: Relation<Post>;
+  @OneToMany(() => Publish, (publish) => publish.user)
+  publish: Relation<Publish>;
+
+  @OneToOne(() => Banking, (banking) => banking.user)
+  banking: Relation<Banking>;
 }

@@ -1,4 +1,4 @@
-import Joi from '@hapi/joi';
+import Joi from 'joi';
 import { save, update } from '../adapter/support.adapter.js';
 
 const schemaSupportRegister = Joi.object({

@@ -1,4 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToMany,
+  Relation,
+} from 'typeorm';
+import { WpGroup } from './wpGroup.entity.js';
 
 @Entity()
 export class Contact {
@@ -23,4 +32,7 @@ export class Contact {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
   updated_at: Date;
+
+  @ManyToMany(() => WpGroup, (wpGroup) => wpGroup.contacts)
+  wpGroup: Relation<WpGroup[]>;
 }

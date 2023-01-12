@@ -1,14 +1,14 @@
 // import { client } from '../adapter/wpClient.adapter.js';
-import {
-  getMessage,
-  responseMessage,
-  sendMessage,
-} from '../controller/wpMessage.controller.js';
-import { isBotActive } from '../controller/wp.controller.js';
+// import {
+//   getMessage,
+//   responseMessage,
+//   sendMessage,
+// } from '../controller/wpMessage.controller.js';
+// import { isBotActive } from '../controller/wp.controller.js';
 
 export const run = async () => {
   try {
-    const isEnable = await isBotActive('43348653-d0d9-42eb-912a-c5d0923f401d')
+    // const isEnable = await isBotActive('43348653-d0d9-42eb-912a-c5d0923f401d');
     // await wpBot();
     // else {
     //   // await client.destroy();
