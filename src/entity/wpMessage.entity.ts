@@ -1,5 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, Relation, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { WpReply } from './wpResponse.entity.js';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
+  Relation,
+} from 'typeorm';
+import { User } from './user.entity.js';
 
 @Entity()
 export class WpMessage {
@@ -16,9 +25,9 @@ export class WpMessage {
   type: string;
 
   @Column('text', { array: true })
-  caption: string[];
+  reply: string[];
 
-  @Column('text', { array: true })
+  @Column('text', { array: true, nullable: true })
   media: string[];
 
   @Column({ nullable: true })
@@ -37,7 +46,7 @@ export class WpMessage {
   })
   updated_at: Date;
 
-  @OneToMany(() => WpReply, (reply) => reply.message)
+  @ManyToOne(() => User, (user) => user.publish)
   @JoinColumn()
-  reply: Relation<WpReply>;
+  user: Relation<User>;
 }

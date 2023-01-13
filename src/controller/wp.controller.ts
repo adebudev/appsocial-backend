@@ -1,14 +1,17 @@
+import { getUserById } from '../adapter/user.adapter.js';
 import { isActive, turnOff, turnOn } from '../adapter/wpBot.adapter.js';
+import { WpClient } from '../config/wpClient.js';
 
-// import { QR } from '../adapter/wpClient.adapter.js';
 import { run } from '../helpers/bot.js';
+import { verifyTokenHelper } from '../helpers/verifyToken.js';
 
-const wpQR = async (_, res) => {
+const getWpQr = async (req, res) => {
   try {
-    // const qr = await QR();
-    // console.log('QR', qr);
-    // res.send(qr);
-    // next();
+    const verified = verifyTokenHelper(req.cookies?.auth_token);
+    const user = await getUserById(verified.id);
+    const client = new WpClient(user.cellular);
+    const qr = await client.getQr();
+    res.status(200).send(qr);
   } catch (e) {
     res.status(400).send({
       message: e.message,
@@ -57,4 +60,4 @@ const isBotActive = async (userId: string) => {
   }
 };
 
-export { wpQR, botEnable, botDisable, isBotActive };
+export { getWpQr, botEnable, botDisable, isBotActive };

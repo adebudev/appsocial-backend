@@ -20,8 +20,8 @@ const update = async (data: Contact) => {
 
 const getAll = async (userId) => {
   const contacts: Contact[] = await contactRepository
-    .createQueryBuilder('user')
-    .where("user.id = :userId", { userId })
+    .createQueryBuilder('contact')
+    .where("contact.userId = :userId", { userId })
     .getMany();
   return contacts;
 };

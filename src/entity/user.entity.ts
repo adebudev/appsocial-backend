@@ -14,6 +14,7 @@ import { Support } from './support.js';
 import { Member } from './member.entity.js';
 import { Publish } from './publish.entity.js';
 import { Banking } from './banking.entity.js';
+import { WpMessage } from './wpMessage.entity.js';
 
 @Entity()
 export class User {
@@ -30,7 +31,7 @@ export class User {
   phone: string;
 
   @Column({ nullable: true, unique: true })
-  celular: string;
+  cellular: string;
 
   @Column({ unique: true })
   username: string;
@@ -95,4 +96,7 @@ export class User {
 
   @OneToOne(() => Banking, (banking) => banking.user)
   banking: Relation<Banking>;
+
+  @OneToMany(() => WpMessage, (messages) => messages.user)
+  messages: Relation<WpMessage>;
 }

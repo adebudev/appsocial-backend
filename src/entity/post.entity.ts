@@ -37,7 +37,7 @@ import {
     })
     updated_at: Date;
   
-    @ManyToOne(() => User, (user) => user.post)
+    @ManyToOne(() => User, (user) => user.publish)
     @JoinColumn()
     user: Relation<User>;
   }

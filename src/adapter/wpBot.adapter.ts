@@ -1,7 +1,7 @@
 import { User } from '../entity/user.entity.js';
 import { WpBot } from '../entity/wpBot.entity.js';
-import { userRepository } from '../repository/user.repository.js';
 import { wpBotRepository } from '../repository/wp.repository.js';
+import { getUser } from './user.adapter.js';
 
 const isActive = async (userId: string) => {
   const bot = await wpBotRepository
@@ -14,7 +14,7 @@ const isActive = async (userId: string) => {
 };
 
 const turnOn = async (id: number, userId: string) => {
-  const user: User = await userRepository.findOneBy({ id: userId });
+  const user: User =  await getUser(userId);
   const botUpdate = await wpBotRepository.findOneBy({
     id,
   });
@@ -32,7 +32,7 @@ const turnOn = async (id: number, userId: string) => {
 };
 
 const turnOff = async (id: number, userId: string) => {
-  const user: User = await userRepository.findOneBy({ id: userId });
+  const user: User = await getUser(userId);
   const botUpdate: WpBot = await wpBotRepository.findOneBy({
     id,
   });
