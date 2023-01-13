@@ -4,7 +4,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
+  Relation,
 } from 'typeorm';
+import { User } from './user.entity.js';
 
 @Entity()
 export class WpMessage {
@@ -23,7 +27,7 @@ export class WpMessage {
   @Column('text', { array: true })
   reply: string[];
 
-  @Column('text', { array: true })
+  @Column('text', { array: true, nullable: true })
   media: string[];
 
   @Column({ nullable: true })
@@ -41,4 +45,8 @@ export class WpMessage {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
   updated_at: Date;
+
+  @ManyToOne(() => User, (user) => user.publish)
+  @JoinColumn()
+  user: Relation<User>;
 }

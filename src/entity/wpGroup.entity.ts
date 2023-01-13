@@ -33,7 +33,7 @@ export class WpGroup {
   })
   updated_at: Date;
   
-  @ManyToOne(() => User, (user) => user.wpBot)
+  @ManyToOne(() => User, (user) => user.wpGroup)
   user: Relation<User>;
 
   @ManyToMany(() => Contact, (contacts) => contacts.wpGroup)

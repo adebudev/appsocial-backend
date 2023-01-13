@@ -10,7 +10,6 @@ const schemaLogin = Joi.object({
 const sessionLogin = async (req, res, _) => {
   try {
     const { error } = schemaLogin.validate(req.body);
-    console.log(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
     const user = await getUserSession(req.body);

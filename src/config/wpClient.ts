@@ -48,6 +48,21 @@ class WpClient {
     });
     return qr;
   }
+
+  async sendMessage(callback) {
+    const clientInit: any = await this.init();
+    await clientInit.on('ready', () => {
+      callback();
+    });
+  }
+
+  async botReply() {
+    const clientInit: any = await this.init();
+    clientInit.on('message', message => {
+      console.log(message.body);
+    });
+     
+  }
 }
 
 export { WpClient };

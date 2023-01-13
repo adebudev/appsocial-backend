@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { save, update } from '../adapter/support.adapter.js';
+import { get, getAll, save, update } from '../adapter/support.adapter.js';
 
 const schemaSupportRegister = Joi.object({
   title: Joi.string().min(4).max(255).required(),
@@ -60,4 +60,40 @@ const supportUpdate = async (req, res) => {
   }
 };
 
-export { supportRegister, supportUpdate };
+const getSupports = async (req, res) => {
+  try {
+    const response = await getAll(req.body.userId);
+    res.status(200).send({
+      message: 'success',
+      status: 200,
+      data: response,
+    });
+  }
+  catch (error) {
+    console.log(error.message);
+    res.status(400).send({
+      message: error.message,
+      status: 400,
+    });
+  }
+}
+
+const getSupport = async (req, res) => {
+  try {
+    const response = await get(req.params.id);
+    res.status(200).send({
+      message: 'success',
+      status: 200,
+      data: response,
+    });
+  }
+  catch (error) {
+    console.log(error.message);
+    res.status(400).send({
+      message: error.message,
+      status: 400,
+    });
+  }
+}
+
+export { getSupports, getSupport, supportRegister, supportUpdate };
