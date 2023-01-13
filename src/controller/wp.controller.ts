@@ -1,53 +1,17 @@
-import QRCode from 'qrcode-terminal';
-import { save } from '../adapter/contact.adapter.js';
-import { groupSave } from '../adapter/wp.adapter.js';
+import { getUserById } from '../adapter/user.adapter.js';
 import { isActive, turnOff, turnOn } from '../adapter/wpBot.adapter.js';
+import { WpClient } from '../config/wpClient.js';
 
-import { client } from '../adapter/wpClient.adapter.js';
 import { run } from '../helpers/bot.js';
+import { verifyTokenHelper } from '../helpers/verifyToken.js';
 
-const wpQR = (req, res) => {
-  client.on('qr', (qr) => {
-    QRCode.generate(qr, { small: true });
-    res.send(qr);
-    // let qr_svg = qr.image(base64, { type: 'svg', margin: 4 });
-    // qr_svg.pipe(require('fs').createWriteStream('./mediaSend/qr-code.svg'));
-    console.log(`⚡ Recuerda que el QR se actualiza cada minuto ⚡'`);
-    console.log(`⚡ Actualiza F5 el navegador para mantener el mejor QR⚡`);
-  });
-};
-
-const contactSave = async (req, res) => {
+const getWpQr = async (req, res) => {
   try {
-    const { id, name, number } = await save(req.body);
-    res.status(201).send({
-      message: 'success',
-      status: 201,
-      data: {
-        id,
-        name,
-        number,
-      },
-    });
-  } catch (e) {
-    res.status(400).send({
-      message: e.message,
-      status: 400,
-    });
-  }
-};
-
-const groupNew = async (req, res) => {
-  try {
-    const { id, name } = await groupSave(req.body);
-    res.status(201).send({
-      message: 'success',
-      status: 201,
-      data: {
-        id,
-        name,
-      },
-    });
+    const verified = verifyTokenHelper(req.cookies?.auth_token);
+    const user = await getUserById(verified.id);
+    const client = new WpClient(user.cellular);
+    const qr = await client.getQr();
+    res.status(200).send(qr);
   } catch (e) {
     res.status(400).send({
       message: e.message,
@@ -96,4 +60,4 @@ const isBotActive = async (userId: string) => {
   }
 };
 
-export { wpQR, contactSave, botEnable, botDisable, isBotActive };
+export { getWpQr, botEnable, botDisable, isBotActive };

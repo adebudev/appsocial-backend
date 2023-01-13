@@ -1,32 +1,39 @@
+import { config } from 'dotenv';
+import nodemailer from 'nodemailer';
+import Joi from 'joi';
+config();
 
-const nodemailer = require('nodemailer');
-
-// email sender function
-exports.sendEmail = function(req, res){
-// Definimos el transporter
-    const transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user: 'example@gmail.com',
-            pass: 'password'
-        }
-    });
-// Definimos el email
-const mailOptions = {
-    from: 'Remitente',
-    to: 'destinatario@gmail.com',
-    subject: 'Asunto',
-    text: 'Contenido del email'
-};
-// Enviamos el email
-transporter.sendMail(mailOptions, function(error, info){
-    if (error){
-        console.log(error);
-        res.send(400, error.message);
-    } else {
-        console.log("Email sent");
-        res.status(200).jsonp(req.body);
-    }
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.SMTP_USERNAME,
+    pass: process.env.SMTP_PASSWORD,
+  },
 });
+
+const schemaMail = Joi.object({
+  from: Joi.string().min(6).max(255).required().email(),
+});
+
+const sendMail = (req, res) => {
+  const { error } = schemaMail.validate(req.body);
+  if (error) return res.status(400).json({ error: error.details[0].message });
+
+  const mailOptions = {
+    from: req.body.from,
+    to: req.body.to,
+    subject: req.body.subject,
+    text: req.body.text,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      res.status(400).send(error);
+    } else {
+      res.status(200).send('Email sent: ' + info.response);
+      // do something useful
+    }
+  });
 };
 
+export { sendMail };

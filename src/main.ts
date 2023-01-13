@@ -2,32 +2,51 @@ import { config } from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 
+import email from './routes/email.js';
 import { DBSource } from './config/db.js';
 
-import { run } from './helpers/bot.js';
+import cookieParser from 'cookie-parser';
+
 import user from './routes/user.js';
 import wp from './routes/wp.js';
 import contact from './routes/contact.js';
+import support from './routes/support.js';
+import member from './routes/member.js';
+import login from './routes/login.js';
+import signup from './routes/register.js';
+
+import { verifyToken } from './controller/token.controller.js';
 
 config();
+
+const app = express();
+
+app.use(cookieParser());
+app.use(cors());
+app.use(express.json());
+const port = process.env.PORT || 6001;
 
 DBSource.initialize()
   .then(() => {
     console.log('Data Source has been initialized!');
-    run();
+    // run();
+    app.use('/api', verifyToken, wp);
   })
   .catch((err) => {
     console.error('Error during Data Source initialization:', err);
   });
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-const port = process.env.PORT || 3000;
+app.use('/api', email);
 
-app.use('/api', user);
-app.use('/api', wp);
-app.use('/api', contact);
+/* PUBLIC ROUTES*/
+app.use('/api', signup);
+app.use('/api', login);
+
+/* PRIVATE ROUTES*/
+app.use('/api', verifyToken, user);
+app.use('/api', verifyToken, contact);
+app.use('/api', verifyToken, member);
+app.use('/api', verifyToken, support);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

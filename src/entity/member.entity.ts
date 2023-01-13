@@ -2,21 +2,30 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  JoinColumn,
-  OneToOne,
   Relation,
+  JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
 } from 'typeorm';
 import { User } from './user.entity.js';
 
 @Entity()
-export class WpBot {
-  @PrimaryGeneratedColumn()
-  id: number;
+export class Member {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({ nullable: true })
+  type: string;
+
+  @Column({ nullable: true })
+  state: boolean;
 
   @Column()
-  state: boolean;
+  start_date: Date;
+
+  @Column()
+  exp_date: Date;
 
   @CreateDateColumn({
     type: 'timestamp',
@@ -31,7 +40,7 @@ export class WpBot {
   })
   updated_at: Date;
 
-  @OneToOne(() => User, (user) => user.wpBot)
+  @OneToOne(() => User, (user) => user.member)
   @JoinColumn()
   user: Relation<User>;
 }

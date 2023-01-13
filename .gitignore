@@ -1,2 +1,11 @@
 node_modules
 .wwebjs_auth
+build
+.env
+.DS_Store
+RemoteAuth.zip
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

@@ -6,22 +6,37 @@ import {
   Relation,
   JoinTable,
   ManyToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Contact } from './contact.entity.js';
 import { User } from './user.entity.js';
 
 @Entity()
 export class WpGroup {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column()
   name: string;
+  
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  created_at: Date;
 
-  @ManyToOne(() => User, (user) => user.wpBot)
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    onUpdate: 'CURRENT_TIMESTAMP(6)',
+  })
+  updated_at: Date;
+  
+  @ManyToOne(() => User, (user) => user.wpGroup)
   user: Relation<User>;
 
-  @ManyToMany(() => Contact) // note: we will create author property in the Photo class below
+  @ManyToMany(() => Contact, (contacts) => contacts.wpGroup)
   @JoinTable()
-  contacts: Contact[];
+  contacts: Relation<Contact[]>;
 }
