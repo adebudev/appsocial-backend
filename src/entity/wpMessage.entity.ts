@@ -1,5 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, Relation, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { WpReply } from './wpResponse.entity.js';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class WpMessage {
@@ -16,7 +21,7 @@ export class WpMessage {
   type: string;
 
   @Column('text', { array: true })
-  caption: string[];
+  reply: string[];
 
   @Column('text', { array: true })
   media: string[];
@@ -36,8 +41,4 @@ export class WpMessage {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
   updated_at: Date;
-
-  @OneToMany(() => WpReply, (reply) => reply.message)
-  @JoinColumn()
-  reply: Relation<WpReply>;
 }

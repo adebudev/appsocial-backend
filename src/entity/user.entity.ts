@@ -30,7 +30,7 @@ export class User {
   phone: string;
 
   @Column({ nullable: true, unique: true })
-  celular: string;
+  cellular: string;
 
   @Column({ unique: true })
   username: string;

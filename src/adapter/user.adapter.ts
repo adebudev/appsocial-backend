@@ -2,6 +2,23 @@ import bcrypt from 'bcrypt';
 import { User } from '../entity/user.entity.js';
 import { userRepository } from '../repository/user.repository.js';
 
+const mapUser = (user: User) => ({
+  id: user.id,
+  firstName: user.firstName,
+  lastName: user.lastName,
+  phone: user.phone,
+  cellular: user.cellular,
+  username: user.username,
+  gender: user.gender,
+  born: user.born,
+  address: user.address,
+  identification: user.identification,
+  city: user.city,
+  country: user.country,
+  email: user.email,
+  rol: user.rol,
+});
+
 const register = async (data: User) => {
   const isEmailExist = await userRepository.findOneBy({ email: data.email });
   if (isEmailExist) {
@@ -14,20 +31,8 @@ const register = async (data: User) => {
   user.password = password;
   const response: User = await userRepository.save(user);
 
-  return {
-    id: response.id,
-    firstName: response.firstName,
-    email: response.email,
-  };
+  return mapUser(response);
 };
-
-const mapUser = (user: User) => ({
-  id: user.id,
-  firstName: user.firstName,
-  lastName: user.lastName,
-  email: user.email,
-  rol: user.rol,
-});
 
 const getAll = async () => {
   const users: User[] = await userRepository
@@ -36,6 +41,15 @@ const getAll = async () => {
       'user.id',
       'user.firstName',
       'user.lastName',
+      'user.phone',
+      'user.cellular',
+      'user.username',
+      'user.gender',
+      'user.born',
+      'user.address',
+      'user.identification',
+      'user.city',
+      'user.country',
       'user.email',
       'user.rol',
     ])

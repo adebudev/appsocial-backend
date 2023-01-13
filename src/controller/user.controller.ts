@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken';
 import Joi from 'joi';
 import {
   getAll,
@@ -6,18 +5,19 @@ import {
   register,
   update,
 } from '../adapter/user.adapter.js';
+import { verifyTokenHelper } from '../helpers/verifyToken.js';
 
 const schemaRegister = Joi.object({
   firstName: Joi.string().min(4).max(255).required(),
   lastName: Joi.string().min(4).max(255).required(),
-  phone: Joi.string().min(7).max(7),
-  celular: Joi.string().min(10).max(10).required(),
+  phone: Joi.string().min(7).max(7).required(),
+  cellular: Joi.string().min(10).max(10).required(),
   username: Joi.string().min(4).max(255).required(),
   gender: Joi.string().min(1).max(1).required(),
-  bord: Joi.date().required(),
+  born: Joi.date().required(),
   address: Joi.string().min(4).max(255),
   identification: Joi.string().min(6).max(12).required(),
-  identificationType: Joi.string().min(4).max(255).required(),
+  identificationType: Joi.string().min(1).max(10).required(),
   city: Joi.string().min(6).max(255),
   country: Joi.string().min(6).max(255),
   email: Joi.string().min(6).max(255).required().email(),
@@ -28,13 +28,13 @@ const schemaUserUpdate = Joi.object({
   firstName: Joi.string().min(4).max(255),
   lastName: Joi.string().min(4).max(255),
   phone: Joi.string().min(7).max(7),
-  celular: Joi.string().min(10).max(10),
+  cellular: Joi.string().min(10).max(10),
   username: Joi.string().min(4).max(255),
   gender: Joi.string().min(1).max(1),
-  bord: Joi.date(),
+  born: Joi.date(),
   address: Joi.string().min(4).max(255),
   identification: Joi.string().min(6).max(12),
-  identificationType: Joi.string().min(4).max(255),
+  identificationType: Joi.string().min(1).max(10),
   city: Joi.string().min(6).max(255),
   country: Joi.string().min(6).max(255),
   email: Joi.string().min(6).max(255).email(),
@@ -49,16 +49,12 @@ const userRegister = async (req, res) => {
       return res.status(400).json({ error: error.details[0].message });
     }
 
-    const { id, firstName, email } = await register(req.body);
+    const user = await register(req.body);
 
     res.status(201).send({
       message: 'success',
       status: 201,
-      data: {
-        id,
-        firstName,
-        email,
-      },
+      data: {...user},
     });
   } catch (error) {
     res.status(400).send({
@@ -125,13 +121,8 @@ const getUser = async (req, res) => {
 };
 
 const getUserByToken = async (req, res) => {
-  if (!req.cookies?.auth_token)
-    return res.status(401).json({ error: 'Acceso denegado' });
   try {
-    const verified = jwt.verify(
-      req.cookies?.auth_token,
-      process.env.TOKEN_SECRET
-    );
+    const verified = verifyTokenHelper(req.cookies?.auth_token);
     const user = await getUserById(verified.id);
     res.status(200).send({
       message: 'success',
