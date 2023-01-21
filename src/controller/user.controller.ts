@@ -43,6 +43,7 @@ const schemaUserUpdate = Joi.object({
 });
 
 const userRegister = async (req, res) => {
+  console.log(req.body);
   try {
     const { error } = schemaRegister.validate(req.body);
     if (error) {
@@ -57,6 +58,7 @@ const userRegister = async (req, res) => {
       data: {...user},
     });
   } catch (error) {
+    console.log(error.message);
     res.status(400).send({
       message: error.message,
       status: 400,
@@ -122,7 +124,7 @@ const getUser = async (req, res) => {
 
 const getUserByToken = async (req, res) => {
   try {
-    const verified = verifyTokenHelper(req.cookies?.auth_token);
+    const verified = verifyTokenHelper(req.params?.auth_token);
     const user = await getUserById(verified.id);
     res.status(200).send({
       message: 'success',

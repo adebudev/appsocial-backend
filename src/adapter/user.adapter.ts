@@ -20,9 +20,14 @@ const mapUser = (user: User) => ({
 });
 
 const register = async (data: User) => {
-  const isEmailExist = await userRepository.findOneBy({ email: data.email });
+  const isEmailExist = await userRepository.findOneBy({
+    email: data.email,
+    username: data.username,
+    identification: data.identification,
+    cellular: data.cellular,
+  });
   if (isEmailExist) {
-    throw Error('Email ya registrado');
+    throw Error('datos ya registrado');
   }
   let user = new User();
   user = { ...data };
@@ -83,6 +88,15 @@ async function update(id: string, data: User) {
 
   updateUser.firstName = data.firstName;
   updateUser.lastName = data.lastName;
+  updateUser.phone = data.phone;
+  updateUser.cellular = data.cellular;
+  updateUser.username = data.username;
+  updateUser.gender = data.gender;
+  updateUser.address = data.address;
+  updateUser.identification = data.identification;
+  updateUser.identificationType = data.identificationType;
+  updateUser.city = data.city;
+  updateUser.country = data.country;
   updateUser.email = data.email;
   updateUser.password = data.password;
   updateUser.rol = data.rol;
@@ -102,6 +116,14 @@ const getUser = async (id): Promise<User> => {
   if (!user) throw Error('Usuario no encontrado');
 
   return user;
-}
+};
 
-export { register, update, updatePassword, getAll, getUserSession, getUserById, getUser };
+export {
+  register,
+  update,
+  updatePassword,
+  getAll,
+  getUserSession,
+  getUserById,
+  getUser,
+};

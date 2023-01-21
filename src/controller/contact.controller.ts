@@ -1,5 +1,5 @@
 import { save } from '../adapter/contact.adapter.js';
-import { groupSave, groupUpdate } from '../adapter/wp.adapter.js';
+import { getGroups, groupSave, groupUpdate } from '../adapter/wp.adapter.js';
 
 const contactSave = async (req, res) => {
     try {
@@ -20,6 +20,8 @@ const contactSave = async (req, res) => {
       });
     }
   };
+
+  
 
   const contactUpdate = async (req, res) => {
     try {
@@ -60,6 +62,24 @@ const contactSave = async (req, res) => {
     }
   };
 
+  const getAllGroups = async (req, res) => {
+    try {
+        const response = await getGroups(req.body.userId);
+        res.status(200).send({
+          message: 'success',
+          status: 200,
+          data: response,
+        });
+      }
+      catch (error) {
+        console.log(error.message);
+        res.status(400).send({
+          message: error.message,
+          status: 400,
+        });
+      }
+  }
+
   const groupUp = async (req, res) => {
     try {
       const response = await groupUpdate(req.params.id, req.body);
@@ -76,4 +96,4 @@ const contactSave = async (req, res) => {
     }
   };
   
-  export { contactSave, contactUpdate, group, groupUp }
+  export { contactSave, contactUpdate, getAllGroups, group, groupUp }

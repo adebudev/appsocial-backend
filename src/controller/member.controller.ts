@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { get, getAll, save, update } from '../adapter/member.adapter.js';
+import { get, getByUser, save, update } from '../adapter/member.adapter.js';
 
 const schemaMembershipRegister = Joi.object({
   type: Joi.string().min(4).max(255),
@@ -58,9 +58,9 @@ const memberUpdate = async (req, res) => {
   }
 }
 
-const getMemberships = async (req, res) => {
+const getMembershipByUser = async (req, res) => {
   try {
-    const response = await getAll(req.body.userId);
+    const response = await getByUser(req.params.userId);
     res.status(200).send({
       message: 'success',
       status: 200,
@@ -94,4 +94,4 @@ const getMembership = async (req, res) => {
   }
 }
 
-export { memberRegister, memberUpdate, getMemberships, getMembership };
+export { memberRegister, memberUpdate, getMembershipByUser, getMembership };

@@ -27,11 +27,11 @@ const update = async (id, data) => {
   return membership;
 }
 
-const getAll = async (userId) => {
-  const membership: Member[] = await memberRepository
+const getByUser = async (userId) => {
+  const membership: Member = await memberRepository
   .createQueryBuilder('member')
   .where("member.userId = :userId", { userId })
-  .getMany();
+  .getOne();
   if (!membership) throw Error('data no encontrada');
 
 return membership;
@@ -51,4 +51,4 @@ const remove = async (id) => {
   return memberRepository.remove(membership);
 }
 
-export { save, update, getAll, get, remove };
+export { save, update, getByUser, get, remove };
