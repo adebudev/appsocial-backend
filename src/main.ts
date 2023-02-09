@@ -8,6 +8,7 @@ import { DBSource } from './config/db.js';
 import cookieParser from 'cookie-parser';
 
 import user from './routes/user.js';
+import dashboard from './routes/dashboard.js';
 import wp from './routes/wp.js';
 import contact from './routes/contact.js';
 import support from './routes/support.js';
@@ -44,6 +45,7 @@ app.use('/api', login);
 
 /* PRIVATE ROUTES*/
 app.use('/api', verifyToken, user);
+app.use('/api', verifyToken, dashboard);
 app.use('/api', verifyToken, contact);
 app.use('/api', verifyToken, member);
 app.use('/api', verifyToken, support);

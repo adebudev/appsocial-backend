@@ -9,6 +9,7 @@ const mapUser = (user: User) => ({
   phone: user.phone,
   cellular: user.cellular,
   username: user.username,
+  state: user.state,
   gender: user.gender,
   born: user.born,
   address: user.address,
@@ -91,6 +92,7 @@ async function update(id: string, data: User) {
   updateUser.phone = data.phone;
   updateUser.cellular = data.cellular;
   updateUser.username = data.username;
+  updateUser.state = data.state;
   updateUser.gender = data.gender;
   updateUser.address = data.address;
   updateUser.identification = data.identification;
@@ -118,6 +120,31 @@ const getUser = async (id): Promise<User> => {
   return user;
 };
 
+const getCountInactiveUsers = async () => {
+  const countUsers = await userRepository
+    .createQueryBuilder('user')
+    .where('user.state = :state', { state: false })
+    .getCount();
+
+  return countUsers;
+}
+
+const getCountActiveUsers = async () => {
+  const countUsers = await userRepository
+    .createQueryBuilder('user')
+    .where('user.state = :state', { state: true })
+    .getCount();
+
+  return countUsers;
+}
+
+const getCountUsers = async () => {
+  const countUsers = await userRepository
+    .createQueryBuilder('user').getCount();
+
+  return countUsers;
+}
+
 export {
   register,
   update,
@@ -126,4 +153,7 @@ export {
   getUserSession,
   getUserById,
   getUser,
+  getCountInactiveUsers,
+  getCountActiveUsers,
+  getCountUsers,
 };

@@ -36,6 +36,9 @@ export class User {
   @Column({ unique: true })
   username: string;
 
+  @Column({ default: false })
+  state: boolean;
+
   @Column({ nullable: true })
   gender: string;
 

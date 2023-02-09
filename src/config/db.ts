@@ -22,4 +22,7 @@ export const DBSource = new DataSource({
   entities: [User, Contact, WpBot, WpGroup, WpMessage, Support, Member, Publish, Banking],
   logging: false,
   synchronize: true,
+  migrations: [
+    "migration/*.js"
+],
 });

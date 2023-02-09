@@ -1,6 +1,9 @@
 import Joi from 'joi';
 import {
   getAll,
+  getCountActiveUsers,
+  getCountInactiveUsers,
+  getCountUsers,
   getUserById,
   register,
   update,
@@ -13,6 +16,7 @@ const schemaRegister = Joi.object({
   phone: Joi.string().min(7).max(7).required(),
   cellular: Joi.string().min(10).max(10).required(),
   username: Joi.string().min(4).max(255).required(),
+  state: Joi.boolean(),
   gender: Joi.string().min(1).max(1).required(),
   born: Joi.date().required(),
   address: Joi.string().min(4).max(255),
@@ -30,6 +34,7 @@ const schemaUserUpdate = Joi.object({
   phone: Joi.string().min(7).max(7),
   cellular: Joi.string().min(10).max(10),
   username: Joi.string().min(4).max(255),
+  state: Joi.boolean(),
   gender: Joi.string().min(1).max(1),
   born: Joi.date(),
   address: Joi.string().min(4).max(255),
@@ -136,4 +141,27 @@ const getUserByToken = async (req, res) => {
   }
 };
 
-export { userRegister, userUpdate, getUsers, getUser, getUserByToken };
+const dashboardUsers = async (_, res) => {
+  try {
+    const inactive_users = await getCountInactiveUsers();
+    const active_users = await getCountActiveUsers();
+    const all_users = await getCountUsers();
+    res.status(200).send({
+      message: 'success',
+      status: 200,
+      data: {
+        inactive_users,
+        active_users,
+        all_users
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(400).send({
+      message: error.message,
+      status: 400,
+    });
+  }
+}
+
+export { userRegister, userUpdate, getUsers, getUser, getUserByToken, dashboardUsers };

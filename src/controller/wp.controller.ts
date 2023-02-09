@@ -7,7 +7,7 @@ import { verifyTokenHelper } from '../helpers/verifyToken.js';
 
 const getWpQr = async (req, res) => {
   try {
-    const verified = verifyTokenHelper(req.cookies?.auth_token);
+    const verified = verifyTokenHelper(req.headers['authorization']);
     const user = await getUserById(verified.id);
     const client = new WpClient(user.cellular);
     const qr = await client.getQr();

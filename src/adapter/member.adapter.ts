@@ -51,4 +51,13 @@ const remove = async (id) => {
   return memberRepository.remove(membership);
 }
 
-export { save, update, getByUser, get, remove };
+const getInactiveMembers = async () => {
+  const users = await memberRepository
+    .createQueryBuilder('member')
+    .where('member.state = :state', { state: false })
+    .getCount();
+
+  return users;
+}
+
+export { save, update, getByUser, get, remove, getInactiveMembers };
