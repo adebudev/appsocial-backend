@@ -16,7 +16,8 @@ import member from './routes/member.js';
 import login from './routes/login.js';
 import signup from './routes/register.js';
 
-import { verifyToken } from './controller/token.controller.js';
+import { verifyToken } from './middleware/verify_token.js';
+import { wpMiddleware } from './middleware/wp_client.js';
 
 config();
 
@@ -30,8 +31,7 @@ const port = process.env.PORT || 6001;
 DBSource.initialize()
   .then(() => {
     console.log('Data Source has been initialized!');
-    // run();
-    app.use('/api', verifyToken, wp);
+    app.use('/api/wp', verifyToken, wpMiddleware, wp);
   })
   .catch((err) => {
     console.error('Error during Data Source initialization:', err);

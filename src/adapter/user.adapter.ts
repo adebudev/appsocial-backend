@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
 import { User } from '../entity/user.entity.js';
+import { handlerToken } from '../helpers/handler_token.js';
 import { userRepository } from '../repository/user.repository.js';
+import { sendEmail } from './email.adapter.js';
 
 const mapUser = (user: User) => ({
   id: user.id,
@@ -73,8 +75,8 @@ const getUserSession = async (data: User) => {
   return mapUser(user);
 };
 
-async function updatePassword(data) {
-  const updateUser = await userRepository.findOneBy({ id: data.id });
+async function updatePassword(userId, data) {
+  const updateUser = await userRepository.findOneBy({ id: userId });
   if (!updateUser) throw Error('id no encontrado');
   const salt = await bcrypt.genSalt(10);
   const password = await bcrypt.hash(data.password, salt);
@@ -83,7 +85,27 @@ async function updatePassword(data) {
   return mapUser(user);
 }
 
-async function update(id: string, data: User) {
+const sendEmailResetPassword = async (data) => {
+  const user = await userRepository.findOneBy({ email: data.email });
+  if (!user) throw Error('Usuario no encontrado');
+
+  const token = handlerToken(user);
+  const email = {
+    from: 'soportes@beatus.com',
+    to: 'delaasuncionbuelvasadrian@gmail.com',
+    subject: 'Restablecer contraseña',
+  };
+
+  const parameters = {
+    email: 'soportes@beatus.com',
+    token,
+  };
+
+  const response = await sendEmail(email, 'reset_password', parameters);
+  return response;
+};
+
+async function userUpdate(id: string, data) {
   const updateUser: User = await userRepository.findOneBy({ id });
   if (!updateUser) throw Error('id no encontrado');
 
@@ -127,7 +149,7 @@ const getCountInactiveUsers = async () => {
     .getCount();
 
   return countUsers;
-}
+};
 
 const getCountActiveUsers = async () => {
   const countUsers = await userRepository
@@ -136,18 +158,17 @@ const getCountActiveUsers = async () => {
     .getCount();
 
   return countUsers;
-}
+};
 
 const getCountUsers = async () => {
-  const countUsers = await userRepository
-    .createQueryBuilder('user').getCount();
+  const countUsers = await userRepository.createQueryBuilder('user').getCount();
 
   return countUsers;
-}
+};
 
 export {
   register,
-  update,
+  userUpdate,
   updatePassword,
   getAll,
   getUserSession,
@@ -156,4 +177,5 @@ export {
   getCountInactiveUsers,
   getCountActiveUsers,
   getCountUsers,
+  sendEmailResetPassword,
 };

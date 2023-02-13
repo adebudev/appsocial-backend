@@ -1,18 +1,12 @@
-import { config } from 'dotenv';
-import nodemailer from 'nodemailer';
 import Joi from 'joi';
-config();
-
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.SMTP_USERNAME,
-    pass: process.env.SMTP_PASSWORD,
-  },
-});
+import { transporterEmail } from '../config/email.js';
+import { handlerTemplates } from '../helpers/handler_templates.js';
 
 const schemaMail = Joi.object({
-  from: Joi.string().min(6).max(255).required().email(),
+  from: Joi.string().required().email(),
+  to: Joi.string().required().email(),
+  subject: Joi.string().min(4).required(),
+  text: Joi.string().min(4).required(),
 });
 
 const sendMail = (req, res) => {
@@ -24,9 +18,10 @@ const sendMail = (req, res) => {
     to: req.body.to,
     subject: req.body.subject,
     text: req.body.text,
-  };
+    html: handlerTemplates('reset_password', { email: 'soporte@beatus.com' })
+   };
 
-  transporter.sendMail(mailOptions, function (error, info) {
+  transporterEmail.sendMail(mailOptions, function (error, info) {
     if (error) {
       res.status(400).send(error);
     } else {

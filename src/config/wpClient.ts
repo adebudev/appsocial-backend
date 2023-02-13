@@ -33,9 +33,14 @@ class WpClient {
         .catch((e) => {
           console.log(e.message);
           reject(e);
+          throw Error('No se pudo conectar al servicio')
         });
     });
     return client;
+  }
+
+  getClient() {
+    return this.init();
   }
 
   async getQr() {

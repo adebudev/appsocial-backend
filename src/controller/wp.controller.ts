@@ -1,16 +1,11 @@
-import { getUserById } from '../adapter/user.adapter.js';
 import { isActive, turnOff, turnOn } from '../adapter/wpBot.adapter.js';
-import { WpClient } from '../config/wpClient.js';
 
 import { run } from '../helpers/bot.js';
-import { verifyTokenHelper } from '../helpers/verifyToken.js';
+import { wpGetQr } from '../helpers/wpFunctionality.js';
 
 const getWpQr = async (req, res) => {
   try {
-    const verified = verifyTokenHelper(req.headers['authorization']);
-    const user = await getUserById(verified.id);
-    const client = new WpClient(user.cellular);
-    const qr = await client.getQr();
+    const qr = await wpGetQr(req.wp_client);
     res.status(200).send(qr);
   } catch (e) {
     res.status(400).send({

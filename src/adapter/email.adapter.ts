@@ -1,20 +1,22 @@
+import { transporterEmail } from '../config/email.js';
+import { handlerTemplates } from '../helpers/handler_templates.js';
 
-module.exports = ({ env }) => ({
-    // ...
-    email: {
-        provider: 'nodemailer',
-        providerOptions: {
-          host: env('SMTP_HOST', 'smtp.example.com'),
-          port: env('SMTP_PORT', 587),
-          auth: {
-            user: env('SMTP_USERNAME'),
-            pass: env('SMTP_PASSWORD'),
-          },
-          // ... any custom nodemailer options
-        },
-        settings: {
-          defaultFrom: 'hello@example.com',
-          defaultReplyTo: 'hello@example.com',
-        },
-    },
-});
+export const sendEmail = (data, htmlType, parameters) => {
+  const mailOptions = {
+    from: data.from,
+    to: data.to,
+    subject: data.subject,
+    text: data.text,
+    html: handlerTemplates(htmlType, parameters),
+  };
+  return new Promise((resolve, reject) => {
+    transporterEmail.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        reject(error);
+        throw Error(error);
+      }
+      resolve(info);
+    });
+  
+  })
+};

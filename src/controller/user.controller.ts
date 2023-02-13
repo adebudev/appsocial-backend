@@ -6,7 +6,9 @@ import {
   getCountUsers,
   getUserById,
   register,
-  update,
+  sendEmailResetPassword,
+  updatePassword,
+  userUpdate,
 } from '../adapter/user.adapter.js';
 import { verifyTokenHelper } from '../helpers/verifyToken.js';
 
@@ -60,7 +62,7 @@ const userRegister = async (req, res) => {
     res.status(201).send({
       message: 'success',
       status: 201,
-      data: {...user},
+      data: { ...user },
     });
   } catch (error) {
     console.log(error.message);
@@ -88,19 +90,19 @@ const getUsers = async (_, res) => {
   }
 };
 
-const userUpdate = async (req, res) => {
+const putUser = async (req, res) => {
   try {
     const { error } = schemaUserUpdate.validate(req.body);
     if (error) {
-       return res.status(400).json({ error: error.details[0].message });
-     }
+      return res.status(400).json({ error: error.details[0].message });
+    }
 
-    const response = await update(req.params.id, req.body);
+    const response = await userUpdate(req.params.id, req.body);
 
     res.status(201).send({
       message: 'success',
       status: 201,
-      data: {...response},
+      data: { ...response },
     });
   } catch (e) {
     console.log(e.message);
@@ -152,7 +154,7 @@ const dashboardUsers = async (_, res) => {
       data: {
         inactive_users,
         active_users,
-        all_users
+        all_users,
       },
     });
   } catch (error) {
@@ -162,6 +164,51 @@ const dashboardUsers = async (_, res) => {
       status: 400,
     });
   }
-}
+};
 
-export { userRegister, userUpdate, getUsers, getUser, getUserByToken, dashboardUsers };
+const emailResetPassword = async (req, res) => {
+  try {
+    const response = await sendEmailResetPassword(req.body);
+    res.status(200).send({
+      message: 'success',
+      status: 200,
+      data: response,
+    });
+  } catch (e) {
+    console.log(e.message);
+    res.status(400).send({
+      message: e.message,
+    });
+  }
+};
+
+const putPassword = async (req, res) => {
+  try {
+    const { error } = schemaUserUpdate.validate(req.body);
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
+    const response = await updatePassword(req.user.id, req.body);
+    res.status(200).send({
+      message: 'success',
+      status: 200,
+      data: { ...response },
+    });
+  } catch (e) {
+    console.log(e.message);
+    res.status(400).send({
+      message: e.message,
+    });
+  }
+};
+
+export {
+  userRegister,
+  putUser,
+  getUsers,
+  getUser,
+  getUserByToken,
+  dashboardUsers,
+  emailResetPassword,
+  putPassword,
+};

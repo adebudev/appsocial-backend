@@ -5,7 +5,7 @@ import { botEnable, botDisable, getWpQr } from '../controller/wp.controller.js';
 const router = express.Router();
 
 /* QR */
-router.get('/wp/qr', getWpQr);
+router.get('/qr', getWpQr);
 
 /* BOT */
 router.post('/bot-enable', botEnable);

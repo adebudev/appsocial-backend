@@ -1,6 +1,6 @@
 import Joi from 'joi';
-import jwt from 'jsonwebtoken';
 import { getUserSession } from '../adapter/user.adapter.js';
+import { handlerToken } from '../helpers/handler_token.js';
 
 const schemaLogin = Joi.object({
   email: Joi.string().min(6).max(255).required().email(),
@@ -14,13 +14,7 @@ const sessionLogin = async (req, res, _) => {
 
     const user = await getUserSession(req.body);
 
-    const token = jwt.sign(
-      {
-        name: user.firstName,
-        id: user.id,
-      },
-      process.env.TOKEN_SECRET
-    );
+    const token = handlerToken(user);
 
     res.cookie('auth_token', token, { maxAge: 43200000 });
     return res
