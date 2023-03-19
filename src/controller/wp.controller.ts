@@ -1,6 +1,6 @@
 import { isActive, turnOff, turnOn } from '../adapter/wpBot.adapter.js';
 
-import { run } from '../helpers/bot.js';
+import { run, wpBot } from '../helpers/bot.js';
 import { wpGetQr } from '../helpers/wpFunctionality.js';
 
 const getWpQr = async (req, res) => {
@@ -22,7 +22,7 @@ const botEnable = async (req, res) => {
       message: 'bot activado',
       status: 200,
     });
-    run();
+    wpBot(req.wp_client);
   } catch (e) {
     res.status(400).send({
       message: e.message,

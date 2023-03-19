@@ -15,6 +15,7 @@ import { Member } from './member.entity.js';
 import { Publish } from './publish.entity.js';
 import { Banking } from './banking.entity.js';
 import { WpMessage } from './wpMessage.entity.js';
+import { NetworkTokens } from './NetworkTokens.entity.js';
 
 @Entity()
 export class User {
@@ -102,4 +103,7 @@ export class User {
 
   @OneToMany(() => WpMessage, (messages) => messages.user)
   messages: Relation<WpMessage>;
+
+  @OneToMany(() => NetworkTokens, (tokens) => tokens.user)
+  tokens: Relation<NetworkTokens>;
 }

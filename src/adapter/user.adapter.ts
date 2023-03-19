@@ -92,7 +92,7 @@ const sendEmailResetPassword = async (data) => {
   const token = handlerToken(user);
   const email = {
     from: 'soportes@beatus.com',
-    to: 'delaasuncionbuelvasadrian@gmail.com',
+    to: 'josesilvera1926@gmail.com',
     subject: 'Restablecer contraseña',
   };
 

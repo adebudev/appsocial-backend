@@ -25,7 +25,7 @@ class WpClient {
             authStrategy: new RemoteAuth({
               store: store,
               clientId: this.numberId,
-              backupSyncIntervalMs: 300000,
+              backupSyncIntervalMs: 8000,
             }),
           });
           resolve(client);

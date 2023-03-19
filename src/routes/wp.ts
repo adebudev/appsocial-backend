@@ -12,9 +12,9 @@ router.post('/bot-enable', botEnable);
 router.post('/bot-disable', botDisable);
 
 /* Message */
-router.post('/wp/message', saveMessage);
-router.get('/wp/message', getMessages);
-router.get('/wp/message/:id', getMessage);
-router.post('/wp/send-message', sendMessage);
+router.post('/message', saveMessage);
+router.get('/message', getMessages);
+router.get('/message/:id', getMessage);
+router.post('/send-message', sendMessage);
 
 export default router;

@@ -7,24 +7,16 @@ import {
     JoinColumn,
     CreateDateColumn,
     UpdateDateColumn,
-    OneToMany,
   } from 'typeorm';
-import { Media } from './media.entity.js';
-  import { User } from './user.entity.js';
+import { Publish } from './publish.entity.js';
   
   @Entity()
-  export class Publish {
+  export class Media {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ nullable: true })
-    description: string;
-
     @Column()
-    start_date: Date;
-
-    @Column()
-    end_date: Date;
+    url: string;
   
     @CreateDateColumn({
       type: 'timestamp',
@@ -39,12 +31,8 @@ import { Media } from './media.entity.js';
     })
     updated_at: Date;
   
-    @ManyToOne(() => User, (user) => user.publish)
+    @ManyToOne(() => Publish, (publish) => publish.media)
     @JoinColumn()
-    user: Relation<User>;
-
-    @OneToMany(() => Media, (media) => media.publish)
-    @JoinColumn()
-    media: Relation<Media>;
+    publish: Relation<Publish>;
   }
   

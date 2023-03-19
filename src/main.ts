@@ -7,12 +7,16 @@ import { DBSource } from './config/db.js';
 
 import cookieParser from 'cookie-parser';
 
+/* PRIVATE ROUTES*/
 import user from './routes/user.js';
+import membership from './routes/membership.js';
 import dashboard from './routes/dashboard.js';
-import wp from './routes/wp.js';
-import contact from './routes/contact.js';
 import support from './routes/support.js';
-import member from './routes/member.js';
+import contact from './routes/contact.js';
+import wp from './routes/wp.js';
+import twitter from './routes/twitter.js';
+
+/* PUBLIC ROUTES*/
 import login from './routes/login.js';
 import signup from './routes/register.js';
 
@@ -47,8 +51,9 @@ app.use('/api', login);
 app.use('/api', verifyToken, user);
 app.use('/api', verifyToken, dashboard);
 app.use('/api', verifyToken, contact);
-app.use('/api', verifyToken, member);
+app.use('/api', verifyToken, membership);
 app.use('/api', verifyToken, support);
+app.use('/api', verifyToken, twitter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

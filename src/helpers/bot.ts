@@ -34,20 +34,17 @@ export const run = async () => {
 //     //     const response = await responseMessages(step);
 //   });
 
-// const wpBot = () => {
-//   client.on('ready', (a) => {
-//     console.log('Listo para escuchar mensajes');
-//     console.log('Client is ready!');
-//     console.log('🔴 escribe: hola');
-//     listenMessage();
-//     // socketEvents.sendStatus(client)
-//   });
+export const wpBot = (client) => {
+  client.on('ready', (a) => {
+    console.log('Listo para escuchar mensajes');
+    console.log('Client is ready!');
+    console.log('🔴 escribe: hola');
+  });
 
-//   client.on('auth_failure', (e) => {
-//     console.log('auth_failure');
-//     console.log(e);
-//     // connectionLost()
-//   });
+  client.on('auth_failure', (e) => {
+    console.log('auth_failure');
+    console.log(e);
+  });
 
-//   client.initialize();
-// };
+  client.initialize();
+};

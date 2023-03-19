@@ -7,24 +7,22 @@ import {
     JoinColumn,
     CreateDateColumn,
     UpdateDateColumn,
-    OneToMany,
   } from 'typeorm';
-import { Media } from './media.entity.js';
-  import { User } from './user.entity.js';
+import { User } from './user.entity.js';
   
   @Entity()
-  export class Publish {
+  export class NetworkTokens {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ nullable: true })
-    description: string;
+    @Column()
+    facebookToken: string;
 
     @Column()
-    start_date: Date;
+    instagramToken: string;
 
     @Column()
-    end_date: Date;
+    twitterToken: string;
   
     @CreateDateColumn({
       type: 'timestamp',
@@ -38,13 +36,9 @@ import { Media } from './media.entity.js';
       onUpdate: 'CURRENT_TIMESTAMP(6)',
     })
     updated_at: Date;
-  
-    @ManyToOne(() => User, (user) => user.publish)
+
+    @ManyToOne(() => User, (user) => user.tokens)
     @JoinColumn()
     user: Relation<User>;
-
-    @OneToMany(() => Media, (media) => media.publish)
-    @JoinColumn()
-    media: Relation<Media>;
   }
   
