@@ -16,6 +16,15 @@ import { Publish } from './publish.entity.js';
     id: string;
 
     @Column()
+    fileName: string;
+
+    @Column()
+    type: string;
+
+    @Column()
+    originalName: string;
+
+    @Column()
     url: string;
   
     @CreateDateColumn({

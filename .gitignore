@@ -1,4 +1,5 @@
 node_modules
+networks
 .wwebjs_auth
 build
 .env

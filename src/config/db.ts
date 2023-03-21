@@ -11,6 +11,8 @@ import { Member } from '../entity/member.entity.js';
 import { Publish } from '../entity/publish.entity.js';
 import { Banking } from '../entity/banking.entity.js';
 import { WpMessage } from '../entity/wpMessage.entity.js';
+import { Media } from '../entity/media.entity.js';
+import { NetworkTokens } from '../entity/NetworkTokens.entity.js';
 
 export const DBSource = new DataSource({
   type: 'postgres',
@@ -29,6 +31,8 @@ export const DBSource = new DataSource({
     Member,
     Publish,
     Banking,
+    Media,
+    NetworkTokens
   ],
   logging: false,
   synchronize: true,

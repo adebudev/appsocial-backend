@@ -15,6 +15,7 @@ import support from './routes/support.js';
 import contact from './routes/contact.js';
 import wp from './routes/wp.js';
 import twitter from './routes/twitter.js';
+import media from './routes/media.js';
 
 /* PUBLIC ROUTES*/
 import login from './routes/login.js';
@@ -46,6 +47,7 @@ app.use('/api', email);
 /* PUBLIC ROUTES*/
 app.use('/api', signup);
 app.use('/api', login);
+app.use('/api', media);
 
 /* PRIVATE ROUTES*/
 app.use('/api', verifyToken, user);
