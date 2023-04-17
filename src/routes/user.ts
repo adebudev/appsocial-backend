@@ -1,5 +1,6 @@
 import express from 'express';
 import {
+  getUserByToken,
   getUsers,
   putPassword,
   putUser,
@@ -8,6 +9,7 @@ import {
 const router = express.Router();
 
 router.get('/user', getUsers);
+router.get('/user/token', getUserByToken);
 router.put('/user/:id', putUser);
 router.put('/reset-password', putPassword);
 

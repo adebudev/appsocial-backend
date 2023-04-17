@@ -1,47 +1,52 @@
 import {
-    Entity,
-    Column,
-    PrimaryGeneratedColumn,
-    ManyToOne,
-    Relation,
-    JoinColumn,
-    CreateDateColumn,
-    UpdateDateColumn,
-  } from 'typeorm';
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  Relation,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToMany,
+  ManyToOne,
+} from 'typeorm';
 import { Publish } from './publish.entity.js';
-  
-  @Entity()
-  export class Media {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+import { User } from './user.entity.js';
 
-    @Column()
-    fileName: string;
+@Entity()
+export class Media {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column()
-    type: string;
+  @Column()
+  fileName: string;
 
-    @Column()
-    originalName: string;
+  @Column()
+  type: string;
 
-    @Column()
-    url: string;
-  
-    @CreateDateColumn({
-      type: 'timestamp',
-      default: () => 'CURRENT_TIMESTAMP(6)',
-    })
-    created_at: Date;
-  
-    @UpdateDateColumn({
-      type: 'timestamp',
-      default: () => 'CURRENT_TIMESTAMP(6)',
-      onUpdate: 'CURRENT_TIMESTAMP(6)',
-    })
-    updated_at: Date;
-  
-    @ManyToOne(() => Publish, (publish) => publish.media)
-    @JoinColumn()
-    publish: Relation<Publish>;
-  }
-  
+  @Column()
+  originalName: string;
+
+  @Column()
+  size: string;
+
+  @Column()
+  url: string;
+
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  created_at: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    onUpdate: 'CURRENT_TIMESTAMP(6)',
+  })
+  updated_at: Date;
+
+  @ManyToOne(() => User, (user) => user.media)
+  user: Relation<User>;
+
+  @ManyToMany(() => Publish, (publish) => publish.images)
+  publish: Relation<Publish[]>;
+}

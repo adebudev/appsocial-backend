@@ -16,6 +16,7 @@ import contact from './routes/contact.js';
 import wp from './routes/wp.js';
 import twitter from './routes/twitter.js';
 import media from './routes/media.js';
+import publish from './routes/publish.js'
 
 /* PUBLIC ROUTES*/
 import login from './routes/login.js';
@@ -23,6 +24,7 @@ import signup from './routes/register.js';
 
 import { verifyToken } from './middleware/verify_token.js';
 import { wpMiddleware } from './middleware/wp_client.js';
+import { run } from './tasks/index.js';
 
 config();
 
@@ -37,6 +39,7 @@ DBSource.initialize()
   .then(() => {
     console.log('Data Source has been initialized!');
     app.use('/api/wp', verifyToken, wpMiddleware, wp);
+    run();
   })
   .catch((err) => {
     console.error('Error during Data Source initialization:', err);
@@ -47,7 +50,7 @@ app.use('/api', email);
 /* PUBLIC ROUTES*/
 app.use('/api', signup);
 app.use('/api', login);
-app.use('/api', media);
+
 
 /* PRIVATE ROUTES*/
 app.use('/api', verifyToken, user);
@@ -56,6 +59,8 @@ app.use('/api', verifyToken, contact);
 app.use('/api', verifyToken, membership);
 app.use('/api', verifyToken, support);
 app.use('/api', verifyToken, twitter);
+app.use('/api', verifyToken, publish);
+app.use('/api', verifyToken, media);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
