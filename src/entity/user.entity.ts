@@ -16,6 +16,7 @@ import { Publish } from './publish.entity.js';
 import { Banking } from './banking.entity.js';
 import { WpMessage } from './wpMessage.entity.js';
 import { NetworkTokens } from './NetworkTokens.entity.js';
+import { Media } from './media.entity.js';
 
 @Entity()
 export class User {
@@ -84,26 +85,29 @@ export class User {
   updated_at: Date;
 
   @OneToMany(() => WpGroup, (wpGroup) => wpGroup.user)
-  wpGroup: Relation<WpGroup>;
+  wpGroup: Relation<WpGroup[]>;
 
   @OneToOne(() => WpBot, (wpBot) => wpBot.user)
   wpBot: Relation<WpBot>;
 
   @OneToMany(() => Support, (support) => support.user)
-  support: Relation<Support>;
+  support: Relation<Support[]>;
 
   @OneToOne(() => Member, (member) => member.user)
   member: Relation<Member>;
 
+  @OneToMany(() => Media, (publish) => publish.user)
+  media: Relation<Media[]>;
+
   @OneToMany(() => Publish, (publish) => publish.user)
-  publish: Relation<Publish>;
+  publish: Relation<Publish[]>;
 
   @OneToOne(() => Banking, (banking) => banking.user)
   banking: Relation<Banking>;
 
   @OneToMany(() => WpMessage, (messages) => messages.user)
-  messages: Relation<WpMessage>;
+  messages: Relation<WpMessage[]>;
 
   @OneToMany(() => NetworkTokens, (tokens) => tokens.user)
-  tokens: Relation<NetworkTokens>;
+  tokens: Relation<NetworkTokens[]>;
 }

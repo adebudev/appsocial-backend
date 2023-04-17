@@ -50,7 +50,7 @@ app.use('/api', email);
 /* PUBLIC ROUTES*/
 app.use('/api', signup);
 app.use('/api', login);
-app.use('/api', media);
+
 
 /* PRIVATE ROUTES*/
 app.use('/api', verifyToken, user);
@@ -60,6 +60,7 @@ app.use('/api', verifyToken, membership);
 app.use('/api', verifyToken, support);
 app.use('/api', verifyToken, twitter);
 app.use('/api', verifyToken, publish);
+app.use('/api', verifyToken, media);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

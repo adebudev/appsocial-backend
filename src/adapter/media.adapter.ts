@@ -3,6 +3,8 @@ import { s3 } from '../config/s3_bucket.js';
 import { Media } from '../entity/media.entity.js';
 import { FILE_IMAGES } from '../helpers/regex.js';
 import { mediaRepository } from '../repository/media.repository.js';
+import { getPublishById } from './publish.adapter.js';
+import { getUser } from './user.adapter.js';
 
 interface S3Response {
   location: string;
@@ -43,19 +45,23 @@ const uploadImageToS3 = (file, path: string, fileName: string) => {
   });
 };
 
-const saveImage = async (file, path: string, fileName: string) => {
+const saveImage = async (userId, publish_id, file, path: string, fileName: string) => {
   const response: S3Response = await uploadImageToS3(file, path, fileName);
+  const publish = publish_id ? [await getPublishById(publish_id)] : [];
+  const user = await getUser(userId);
   const media = {
     fileName: response.fileName,
     type: response.fileType,
     originalName: response.originalName,
     size: file.size,
-    url: response.location
+    url: response.location,
+    publish: publish,
+    user
   }
   return mediaRepository.save(media);
 };
 
-const getImage =async (id) => {
+const getImage = async (id) => {
   const membership: Media = await mediaRepository.findOneBy({ id });
   if (!membership) throw Error('Media File no encontrado');
 

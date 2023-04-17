@@ -7,6 +7,8 @@ import mongoose from 'mongoose';
 
 const { Client, RemoteAuth } = wp;
 
+mongoose.set('strictQuery', true);
+
 class WpClient {
   numberId: string;
   constructor(numberId) {
@@ -25,7 +27,7 @@ class WpClient {
             authStrategy: new RemoteAuth({
               store: store,
               clientId: this.numberId,
-              backupSyncIntervalMs: 8000,
+              backupSyncIntervalMs: 300000,
             }),
           });
           resolve(client);
@@ -33,7 +35,7 @@ class WpClient {
         .catch((e) => {
           console.log(e.message);
           reject(e);
-          throw Error('No se pudo conectar al servicio')
+          throw Error('No se pudo conectar al servicio');
         });
     });
     return client;
@@ -49,6 +51,11 @@ class WpClient {
       clientInit.on('qr', (qr) => {
         resolve(qr);
       });
+      clientInit.on('remote_session_saved', () => {
+        console.log('La session ha sido guardada Exitosamente!');
+        resolve('remote session saved!');
+      });
+
       clientInit.initialize();
     });
     return qr;
@@ -57,16 +64,16 @@ class WpClient {
   async sendMessage(callback) {
     const clientInit: any = await this.init();
     await clientInit.on('ready', () => {
+      console.log('Client is ready!');
       callback();
     });
   }
 
   async botReply() {
     const clientInit: any = await this.init();
-    clientInit.on('message', message => {
+    clientInit.on('message', (message) => {
       console.log(message.body);
     });
-     
   }
 }
 
