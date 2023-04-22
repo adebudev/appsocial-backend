@@ -21,10 +21,10 @@ export class Member {
   @Column({ nullable: true })
   state: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   start_date: Date;
 
-  @Column()
+  @Column({ nullable: true })
   exp_date: Date;
 
   @CreateDateColumn({

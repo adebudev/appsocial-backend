@@ -2,7 +2,7 @@ import { Member } from '../entity/member.entity.js';
 import { memberRepository } from '../repository/member.repository.js';
 import { getUser, userUpdate } from './user.adapter.js';
 
-const save = async (data) => {
+const saveMembership = async (data) => {
   let membership = new Member();
   membership = { ...data };
   membership.user = await getUser(data.user_id);
@@ -22,8 +22,11 @@ const save = async (data) => {
   };
 };
 
-const update = async (memberId, data) => {
-  const updateMembership = await memberRepository.findOneBy({ id: memberId });
+const updateMembership = async (userId, data) => {
+  const updateMembership = await memberRepository
+  .createQueryBuilder('member')
+  .where('member.userId = :userId', { userId })
+  .getOne();
   if (!updateMembership) throw Error('id no encontrado');
 
   updateMembership.state = data.state;
@@ -80,4 +83,4 @@ const getInactiveMembers = async () => {
   return users;
 };
 
-export { save, update, getByUser, get, remove, getInactiveMembers };
+export { saveMembership, updateMembership, getByUser, get, remove, getInactiveMembers };

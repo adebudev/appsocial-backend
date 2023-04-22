@@ -3,6 +3,7 @@ import { User } from '../entity/user.entity.js';
 import { handlerToken } from '../helpers/handler_token.js';
 import { userRepository } from '../repository/user.repository.js';
 import { sendEmail } from './email.adapter.js';
+import { saveMembership } from './member.adapter.js';
 
 const mapUser = (user: User) => ({
   id: user.id,
@@ -38,6 +39,11 @@ const register = async (data: User) => {
   const password = await bcrypt.hash(data.password, salt);
   user.password = password;
   const response: User = await userRepository.save(user);
+  const membershipOb = {
+    state: data.state,
+    user_id: response.id,
+  }
+  saveMembership(membershipOb);
 
   return mapUser(response);
 };
@@ -86,13 +92,13 @@ async function updatePassword(userId, data) {
 }
 
 const sendEmailResetPassword = async (data) => {
-  const user = await userRepository.findOneBy({ email: data.email });
+  const user = await userRepository.findOneBy({ email: data.to });
   if (!user) throw Error('Usuario no encontrado');
 
   const token = handlerToken(user);
   const email = {
     from: 'soportes@beatus.com',
-    to: 'josesilvera1926@gmail.com',
+    to: data.to,
     subject: 'Restablecer contraseña',
   };
 
@@ -124,6 +130,7 @@ async function userUpdate(id: string, data) {
   updateUser.email = data.email;
   updateUser.password = data.password;
   updateUser.rol = data.rol;
+
   const user = await userRepository.save(updateUser);
   return mapUser(user);
 }

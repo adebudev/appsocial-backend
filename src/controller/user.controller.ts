@@ -49,6 +49,10 @@ const schemaUserUpdate = Joi.object({
   rol: Joi.string(),
 });
 
+const schemaEmail = Joi.object({
+  to: Joi.string().min(6).max(255).email(),
+})
+
 const userRegister = async (req, res) => {
   console.log(req.body);
   try {
@@ -132,6 +136,7 @@ const getUser = async (req, res) => {
 
 const getUserByToken = async (req, res) => {
   try {
+    console.log('auth_token', req.params?.auth_token)
     const verified = verifyTokenHelper(req.params?.auth_token);
     const user = await getUserById(verified.id);
     res.status(200).send({
@@ -169,7 +174,12 @@ const dashboardUsers = async (_, res) => {
 
 const emailResetPassword = async (req, res) => {
   try {
+    const { error } = schemaEmail.validate(req.body);
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
     const response = await sendEmailResetPassword(req.body);
+
     res.status(200).send({
       message: 'success',
       status: 200,
