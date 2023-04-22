@@ -10,11 +10,26 @@ const getGroups = async (userId): Promise<WpGroup[]> => {
 return groups;
 }
 
+const getGroupById = async (userId): Promise<WpGroup[]> => {
+  const groups: WpGroup[] = await wpGroupRepository
+  .createQueryBuilder('wpGroup')
+  .where("wpGroup.userId = :userId", { userId })
+  .getMany();
+return groups;
+}
+
 const getGroup = async (id): Promise<WpGroup> => {
   const wpGroup = await wpGroupRepository.findOneBy({ id });
   if (!wpGroup) throw Error('Grupo no encontrado');
 
   return wpGroup;
+}
+
+const getGroupWithContacts = async () => {
+  const questions = await wpGroupRepository.createQueryBuilder("contact")
+    .leftJoinAndSelect("contact.wpGroup", "wpGroup")
+    .getMany();
+    return questions;
 }
 
 const groupSave = async (data) => {
@@ -35,4 +50,4 @@ const groupUpdate = async (groupId, data) => {
   return { id, name };
 };
 
-export { groupSave, groupUpdate, getGroups, getGroup };
+export { groupSave, groupUpdate, getGroups, getGroup, getGroupWithContacts };
