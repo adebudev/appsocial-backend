@@ -1,4 +1,4 @@
-import { getImage, saveImage } from '../adapter/media.adapter.js';
+import { getImage, getImagesByUser, saveImage } from '../adapter/media.adapter.js';
 import { getFileExtension } from '../helpers/get_file_name.js';
 
 const uploadNetworksImages = async (req, res) => {
@@ -37,20 +37,20 @@ const uploadNetworksImages = async (req, res) => {
   }
 };
 
-const getUploadNetworkImages = async (req, res) => {
-  try {
-    const fileName = getFileExtension(req.file?.originalname);
-    if (!fileName) res.end();
-    const response = await saveImage(req?.file, req.query?.network, fileName);
-    res.status(200).send(response);
-  } catch (e) {
-    console.log(e.message);
-    res.status(400).send({
-      message: e.message,
-      status: 400,
-    });
-  }
-};
+// const getUploadNetworkImages = async (req, res) => {
+//   try {
+//     const fileName = getFileExtension(req.file?.originalname);
+//     if (!fileName) res.end();
+//     const response = await saveImage(req?.file, req.query?.network, fileName);
+//     res.status(200).send(response);
+//   } catch (e) {
+//     console.log(e.message);
+//     res.status(400).send({
+//       message: e.message,
+//       status: 400,
+//     });
+//   }
+// };
 
 const getImageById = async (req, res) => {
   try {
@@ -65,4 +65,17 @@ const getImageById = async (req, res) => {
   }
 };
 
-export { uploadNetworksImages, getUploadNetworkImages, getImageById };
+const getImages = async (req, res) => {
+  try {
+    const response = await getImagesByUser(req.user.id);
+    res.status(200).send(response);
+  } catch (e) {
+    console.log(e.message);
+    res.status(400).send({
+      message: e.message,
+      status: 400,
+    });
+  }
+}
+
+export { uploadNetworksImages, getImageById, getImages };

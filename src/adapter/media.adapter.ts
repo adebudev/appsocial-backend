@@ -47,6 +47,7 @@ const uploadImageToS3 = (file, path: string, fileName: string) => {
 
 const saveImage = async (userId, publish_id, file, path: string, fileName: string) => {
   const response: S3Response = await uploadImageToS3(file, path, fileName);
+  if (!response) throw Error('Error al guardar Imagen en S3');
   const publish = publish_id ? [await getPublishById(publish_id)] : [];
   const user = await getUser(userId);
   const media = {
@@ -68,4 +69,13 @@ const getImage = async (id) => {
   return membership;
 }
 
-export { saveImage, getImage };
+const getImagesByUser = async (userId) => {
+  if (!userId) throw Error('no se le ha pasado un publishId'); 
+  const media: Media[] = await mediaRepository
+    .createQueryBuilder('media')
+    .where('media.userId = :userId', { userId })
+    .getMany();
+  return media;
+}
+
+export { saveImage, getImage, getImagesByUser };
