@@ -72,7 +72,7 @@ const contactSave = async (req, res) => {
         });
       }
       catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         res.status(400).send({
           message: error.message,
           status: 400,
@@ -108,7 +108,7 @@ const contactSave = async (req, res) => {
         });
       }
       catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         res.status(400).send({
           message: error.message,
           status: 400,

@@ -54,7 +54,6 @@ const schemaEmail = Joi.object({
 })
 
 const userRegister = async (req, res) => {
-  console.log(req.body);
   try {
     const { error } = schemaRegister.validate(req.body);
     if (error) {
@@ -136,7 +135,6 @@ const getUser = async (req, res) => {
 
 const getUserByToken = async (req, res) => {
   try {
-    console.log('auth_token', req.params?.auth_token)
     const verified = verifyTokenHelper(req.params?.auth_token);
     const user = await getUserById(verified.id);
     res.status(200).send({

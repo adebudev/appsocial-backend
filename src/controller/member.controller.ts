@@ -60,8 +60,8 @@ const memberUpdate = async (req, res) => {
 
 const getMembershipByUser = async (req, res) => {
   try {
-    console.log(req.params.userId)
-    const response = await getByUser(req.params.userId);
+    console.log('userId');
+    const response = await getByUser(req.user.id);
     res.status(200).send({
       message: 'success',
       status: 200,

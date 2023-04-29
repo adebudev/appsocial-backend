@@ -4,8 +4,8 @@ import { getMembership, getMembershipByUser, memberRegister, memberUpdate } from
 const router = express.Router();
 
 router.post('/membership', memberRegister);
-router.get('/membership/:id', getMembership);
-router.get('/membership/user/:userId', getMembershipByUser);
+// router.get('/membership/:id', getMembership);
+router.get('/membership', getMembershipByUser);
 router.put('/membership/:id', memberUpdate);
 
 export default router;

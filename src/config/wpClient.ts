@@ -33,7 +33,7 @@ class WpClient {
           resolve(client);
         })
         .catch((e) => {
-          console.log(e.message);
+          console.error(e.message);
           reject(e);
           throw Error('No se pudo conectar al servicio');
         });
