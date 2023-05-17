@@ -13,6 +13,7 @@ import { Banking } from '../entity/banking.entity.js';
 import { WpMessage } from '../entity/wpMessage.entity.js';
 import { Media } from '../entity/media.entity.js';
 import { NetworkTokens } from '../entity/NetworkTokens.entity.js';
+import { TempTwitterTokens } from '../entity/tempTwitterToken.entity.js';
 
 export const DBSource = new DataSource({
   type: 'postgres',
@@ -32,7 +33,8 @@ export const DBSource = new DataSource({
     Publish,
     Banking,
     Media,
-    NetworkTokens
+    NetworkTokens,
+    TempTwitterTokens
   ],
   logging: false,
   synchronize: true,

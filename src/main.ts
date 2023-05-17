@@ -4,8 +4,11 @@ import cors from 'cors';
 
 import email from './routes/email.js';
 import { DBSource } from './config/db.js';
+import session from 'express-session';
 
 import cookieParser from 'cookie-parser';
+
+import { configSession } from './config/session.js';
 
 /* PRIVATE ROUTES*/
 import user from './routes/user.js';
@@ -17,6 +20,7 @@ import wp from './routes/wp.js';
 import twitter from './routes/twitter.js';
 import media from './routes/media.js';
 import publish from './routes/publish.js'
+import networks from './routes/networks.js';
 
 /* PUBLIC ROUTES*/
 import login from './routes/login.js';
@@ -28,22 +32,27 @@ import { run } from './tasks/index.js';
 
 config();
 
+
 const app = express();
 
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
+
 const port = process.env.PORT || 6001;
 
+
 DBSource.initialize()
-  .then(() => {
-    console.log('Data Source has been initialized!');
-    app.use('/api/wp', verifyToken, wpMiddleware, wp);
-    run();
-  })
-  .catch((err) => {
-    console.error('Error during Data Source initialization:', err);
-  });
+.then(() => {
+  console.log('Data Source has been initialized!');
+  app.use('/api/wp', verifyToken, wpMiddleware, wp);
+  run();
+})
+.catch((err) => {
+  console.error('Error during Data Source initialization:', err);
+});
+
+app.use(session(configSession));
 
 app.use('/api', email);
 
@@ -54,6 +63,7 @@ app.use('/api', login);
 
 /* PRIVATE ROUTES*/
 app.use('/api', verifyToken, user);
+app.use('/api', verifyToken, networks);
 app.use('/api', verifyToken, dashboard);
 app.use('/api', verifyToken, contact);
 app.use('/api', verifyToken, membership);

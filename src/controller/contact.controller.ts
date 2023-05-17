@@ -21,8 +21,6 @@ const contactSave = async (req, res) => {
     }
   };
 
-  
-
   const contactUpdate = async (req, res) => {
     try {
       const { id, name, number } = await save(req.body);
@@ -65,11 +63,7 @@ const contactSave = async (req, res) => {
   const getContactsByGroup = async (req, res) => {
     try {
         const response = await getGroupWithContacts();
-        res.status(200).send({
-          message: 'success',
-          status: 200,
-          data: response,
-        });
+        res.status(200).send(response);
       }
       catch (error) {
         console.error(error.message);
@@ -83,11 +77,7 @@ const contactSave = async (req, res) => {
   const getAllGroups = async (req, res) => {
     try {
         const response = await getGroups(req.user.id);
-        res.status(200).send({
-          message: 'success',
-          status: 200,
-          data: response,
-        });
+        res.status(200).send(response);
       }
       catch (error) {
         console.log(error.message);

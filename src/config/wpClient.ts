@@ -2,8 +2,9 @@ import { config } from 'dotenv';
 config(); // initialize env variables
 
 import wp from 'whatsapp-web.js';
-import { MongoStore } from 'wwebjs-mongo';
 import mongoose from 'mongoose';
+import { MongoStore } from 'wwebjs-mongo';
+import PinoLogger from 'pino';
 
 const { Client, RemoteAuth } = wp;
 
@@ -11,34 +12,46 @@ mongoose.set('strictQuery', true);
 
 class WpClient {
   numberId: string;
-  constructor(numberId) {
+  userId: string;
+  logger: any
+
+  constructor(numberId, userId) {
+    this.logger = PinoLogger.default({ name: 'WpClient config' });
     this.numberId = numberId;
+    this.userId = userId;
   }
 
   async init() {
-    const client = new Promise((resolve, reject) => {
-      mongoose
-        .connect(
-          `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_DB_NAME}`
-        )
-        .then(() => {
-          const store = new MongoStore({ mongoose: mongoose });
-          const client = new Client({
-            authStrategy: new RemoteAuth({
-              store: store,
-              clientId: this.numberId,
-              backupSyncIntervalMs: 300000,
-            }),
+    try {
+      const client = new Promise((resolve, reject) => {
+        mongoose
+          .connect(
+            `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_DB_NAME}`
+          )
+          .then(() => {
+            const store = new MongoStore({ mongoose: mongoose });
+            const client = new Client({
+              authStrategy: new RemoteAuth({
+                store: store,
+                clientId: this.numberId,
+                backupSyncIntervalMs: 300000,
+              }),
+            });
+            const logger = this.logger.child({ clientId: this.numberId, userId: this.userId });
+            logger.info('client initialized!');
+            resolve(client);
+          })
+          .catch((err) => {
+            console.error(err.message);
+            reject(err);
+            this.logger.error(err);
           });
-          resolve(client);
-        })
-        .catch((e) => {
-          console.error(e.message);
-          reject(e);
-          throw Error('No se pudo conectar al servicio');
-        });
-    });
-    return client;
+      });
+      return client;
+    } catch (err) {
+      console.error(err);
+      this.logger.error(err);
+    }
   }
 
   getClient() {

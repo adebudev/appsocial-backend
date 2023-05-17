@@ -19,6 +19,9 @@ export class WpGroup {
 
   @Column()
   name: string;
+
+  @Column({ nullable: true })
+  status: boolean;
   
   @CreateDateColumn({
     type: 'timestamp',

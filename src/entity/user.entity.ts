@@ -17,6 +17,7 @@ import { Banking } from './banking.entity.js';
 import { WpMessage } from './wpMessage.entity.js';
 import { NetworkTokens } from './NetworkTokens.entity.js';
 import { Media } from './media.entity.js';
+import { TempTwitterTokens } from './tempTwitterToken.entity.js';
 
 @Entity()
 export class User {
@@ -108,6 +109,9 @@ export class User {
   @OneToMany(() => WpMessage, (messages) => messages.user)
   messages: Relation<WpMessage[]>;
 
-  @OneToMany(() => NetworkTokens, (tokens) => tokens.user)
+  @OneToOne(() => NetworkTokens, (tokens) => tokens.user)
   tokens: Relation<NetworkTokens[]>;
+
+  @OneToOne(() => TempTwitterTokens, (tempTokens) => tempTokens.user)
+  tempTokens: Relation<TempTwitterTokens>;
 }

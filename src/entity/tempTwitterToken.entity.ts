@@ -8,21 +8,18 @@ import {
     UpdateDateColumn,
     OneToOne,
   } from 'typeorm';
-import { User } from './user.entity.js';
+  import { User } from './user.entity.js';
   
   @Entity()
-  export class NetworkTokens {
+  export class TempTwitterTokens {
     @PrimaryGeneratedColumn('uuid')
     id: string;
-
+  
     @Column({ nullable: true })
-    facebookToken: string;
-
+    codeVerifier: string;
+  
     @Column({ nullable: true })
-    instagramToken: string;
-
-    @Column({ nullable: true })
-    twitterToken: string;
+    sessionState: string;
   
     @CreateDateColumn({
       type: 'timestamp',
@@ -36,8 +33,8 @@ import { User } from './user.entity.js';
       onUpdate: 'CURRENT_TIMESTAMP(6)',
     })
     updated_at: Date;
-
-    @OneToOne(() => User, (user) => user.tokens)
+  
+    @OneToOne(() => User, (user) => user.support)
     @JoinColumn()
     user: Relation<User>;
   }

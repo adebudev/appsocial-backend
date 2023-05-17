@@ -1,11 +1,13 @@
 import express from 'express';
 import { getMessage, getMessages, saveMessage, sendMessage } from '../controller/wpMessage.controller.js';
-import { botEnable, botDisable, getWpQr } from '../controller/wp.controller.js';
+import { botEnable, botDisable, getWpQr, getWpUserInfo } from '../controller/wp.controller.js';
 
 const router = express.Router();
 
 /* QR */
 router.get('/qr', getWpQr);
+
+router.get('/user-info', getWpUserInfo);
 
 /* BOT */
 router.post('/bot-enable', botEnable);

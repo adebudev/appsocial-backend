@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/contact', contactSave);
 router.put('/contact/:id', contactUpdate);
-router.get('/contact-by-group/:id', getContactsByGroup);
+router.get('/contact-by-group', getContactsByGroup);
 
 router.get('/group', getAllGroups);
 router.get('/group/:id', getGroupById);

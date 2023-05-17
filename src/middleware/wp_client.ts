@@ -4,7 +4,7 @@ import { WpClient } from '../config/wpClient.js';
 export const wpMiddleware = async (req, res, next) => {
   try {
     const user = await getUserById(req.user.id);
-    const client = new WpClient(user.cellular);
+    const client = new WpClient(user.cellular, user.id);
     req.wp_client = await client.getClient();
     next();
   } catch (error) {

@@ -1,5 +1,5 @@
 import express from 'express';
-import { getMembership, getMembershipByUser, memberRegister, memberUpdate } from '../controller/member.controller.js';
+import { getMembershipByUser, memberRegister, memberUpdate } from '../controller/member.controller.js';
 
 const router = express.Router();
 

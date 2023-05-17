@@ -3,10 +3,26 @@ import { networkTokenRepository } from '../repository/networkToken.repository.js
 import { getUser } from './user.adapter.js';
 
 const saveNetworkTokens = async (userId, data) => {
-  let publish = new NetworkTokens();
-  publish = { ...data };
-  publish.user = await getUser(userId);
-  return networkTokenRepository.save(publish);
+  const getNetworks: NetworkTokens = await networkTokenRepository
+    .createQueryBuilder('networkTokens')
+    .where('networkTokens.userId = :userId', { userId })
+    .getOne();
+  const user = await getUser(userId);
+  let networks = null;
+
+  if (getNetworks === null) {
+    let saveNetwork = new NetworkTokens();
+    saveNetwork = { ...data };
+    saveNetwork.user = user;
+    networks = networkTokenRepository.save(saveNetwork);
+  } else {
+    getNetworks.facebookToken = data.facebookToken;
+    getNetworks.instagramToken = data.instagramToken;
+    getNetworks.twitterToken = data.twitterToken;
+
+    networks = networkTokenRepository.save(getNetworks);
+  }
+  return networks;
 };
 
 const getNetworkTokensByUser = async (userId) => {
@@ -20,7 +36,7 @@ const getNetworkTokensByUser = async (userId) => {
 };
 
 const updateNetworkTokens = () => {
-    return;
-}
+  return;
+};
 
 export { getNetworkTokensByUser, saveNetworkTokens };

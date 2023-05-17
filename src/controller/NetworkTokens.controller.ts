@@ -5,12 +5,8 @@ import {
 
 const networkTokensRegister = async (req, res) => {
   try {
-    const response = await saveNetworkTokens(req.params.userId, req.body);
-    res.status(201).send({
-      message: 'success',
-      status: 201,
-      data: { ...response },
-    });
+    const response = await saveNetworkTokens(req.user.id, req.body);
+    res.status(201).send(response);
   } catch (e) {
     console.log(e.message);
     res.status(400).send({
@@ -22,12 +18,8 @@ const networkTokensRegister = async (req, res) => {
 
 const getNetworkTokens = async (req, res) => {
   try {
-    const response = await getNetworkTokensByUser(req.params.userId);
-    res.status(201).send({
-      message: 'success',
-      status: 201,
-      data: { ...response },
-    });
+    const response = await getNetworkTokensByUser(req.user.id.userId);
+    res.status(201).send(response);
   } catch (e) {
     console.log(e.message);
     res.status(400).send({
